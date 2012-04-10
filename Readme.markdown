@@ -4,4 +4,6 @@ There are dozens of pull to refresh views. I've never found one I'm happy with. 
 
 For now, see the header for documentation. I'll add an example project at some point.
 
+I took some inspiration from [PullToRefreshView by chpwn](https://github.com/chpwn/PullToRefreshView), which is based on [EGOTableViewPullRefresh](https://github.com/enormego/EGOTableViewPullRefresh), which is inspired by Tweetie 2's pull to refresh by [Loren Brichter](http://twitter.com/lorenb). And around we go.
+
 Enjoy.
