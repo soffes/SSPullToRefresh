@@ -15,14 +15,14 @@ typedef enum {
 } SSPullToRefreshViewState;
 
 @protocol SSPullToRefreshViewDelegate;
-@protocol SSPullToRefreshViewContentView;
+@protocol SSPullToRefreshContentView;
 
 @interface SSPullToRefreshView : UIView
 
 @property (nonatomic, assign, readonly) UIScrollView *scrollView;
 @property (nonatomic, assign) id<SSPullToRefreshViewDelegate> delegate;
 @property (nonatomic, assign) CGFloat expandedHeight;
-@property (nonatomic, strong) UIView<SSPullToRefreshViewContentView> *contentView;
+@property (nonatomic, strong) UIView<SSPullToRefreshContentView> *contentView;
 
 - (id)initWithScrollView:(UIScrollView *)scrollView;
 
@@ -36,17 +36,22 @@ typedef enum {
 
 @optional
 
-- (BOOL)pullToRefreshViewShouldRefresh:(SSPullToRefreshView *)view;
+- (BOOL)pullToRefreshViewShouldStartLoading:(SSPullToRefreshView *)view;
+- (void)pullToRefreshViewShouldRefreshDidStartLoading:(SSPullToRefreshView *)view;
+- (void)pullToRefreshViewShouldRefreshDidFinishLoading:(SSPullToRefreshView *)view;
 - (NSDate *)pullToRefreshViewLastUpdatedAt:(SSPullToRefreshView *)view;
 
 @end
 
 
-@protocol SSPullToRefreshViewContentView <NSObject>
+@protocol SSPullToRefreshContentView <NSObject>
+
+@required
+
+- (void)setState:(SSPullToRefreshViewState)state withPullToRefreshView:(SSPullToRefreshView *)view;
 
 @optional
 
-- (void)setState:(SSPullToRefreshViewState)state withPullToRefreshView:(SSPullToRefreshView *)view;
 - (void)setLastUpdatedAt:(NSDate *)date withPullToRefreshView:(SSPullToRefreshView *)view;
 
 @end

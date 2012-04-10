@@ -28,6 +28,7 @@
 #pragma mark - Accessors
 
 - (void)setState:(SSPullToRefreshViewState)state {
+	BOOL loading = _state == SSPullToRefreshViewStateLoading;
     _state = state;
 	
 	switch (_state) {
@@ -37,20 +38,29 @@
 		}
 			
 		case SSPullToRefreshViewStateNormal: {
+			[self refreshLastUpdatedAt];
 			[self _setContentInsetTop:0.0f];
 			break;
 		}
 			
 		case SSPullToRefreshViewStateLoading: {
 			[self _setContentInsetTop:self.expandedHeight];
-			[self refreshLastUpdatedAt];
 			break;
 		}
 	}
 	
 	// Forward to content view
-	if ([self.contentView respondsToSelector:@selector(setState:withPullToRefreshView:)]) {
-		[self.contentView setState:_state withPullToRefreshView:self];
+	[_contentView setState:_state withPullToRefreshView:self];
+	
+	// Update delegate
+	if (loading && _state != SSPullToRefreshViewStateLoading) {
+		if ([_delegate respondsToSelector:@selector(pullToRefreshViewShouldRefreshDidFinishLoading:)]) {
+			[_delegate pullToRefreshViewShouldRefreshDidFinishLoading:self];
+		}
+	} else if (!loading && _state == SSPullToRefreshViewStateLoading) {
+		if ([_delegate respondsToSelector:@selector(pullToRefreshViewShouldRefreshDidStartLoading:)]) {
+			[_delegate pullToRefreshViewShouldRefreshDidStartLoading:self];
+		}
 	}
 }
 
@@ -66,6 +76,19 @@
 	_scrollView = scrollView;	
 	_deafultContentInset = _scrollView.contentInset;
 	[_scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:context];
+}
+
+
+- (void)setContentView:(UIView<SSPullToRefreshContentView> *)contentView {
+	[_contentView removeFromSuperview];
+	_contentView = contentView;
+	
+	CGSize size = self.bounds.size;
+	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_contentView.frame = CGRectMake(0.0f, size.height - _expandedHeight, size.width, _expandedHeight);
+	[_contentView setState:_state withPullToRefreshView:self];
+	[self refreshLastUpdatedAt];
+	[self addSubview:_contentView];
 }
 
 
@@ -94,7 +117,7 @@
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		self.scrollView = scrollView;
 		self.state = SSPullToRefreshViewStateNormal;
-		self.expandedHeight = 80.0f;
+		self.expandedHeight = 70.0f;
 		
 		[self.scrollView addSubview:self];
 	}
@@ -198,8 +221,8 @@
 	SSPullToRefreshViewState newState = SSPullToRefreshViewStateLoading;
 	
 	// Ask the delegate if it's cool to start loading
-	if ([_delegate respondsToSelector:@selector(pullToRefreshViewShouldRefresh:)]) {
-		if (![_delegate pullToRefreshViewShouldRefresh:self]) {
+	if ([_delegate respondsToSelector:@selector(pullToRefreshViewShouldStartLoading:)]) {
+		if (![_delegate pullToRefreshViewShouldStartLoading:self]) {
 			// Animate back to normal since the delegate said no
 			newState = SSPullToRefreshViewStateNormal;
 		}
