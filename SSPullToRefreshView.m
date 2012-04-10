@@ -83,9 +83,7 @@
 	[_contentView removeFromSuperview];
 	_contentView = contentView;
 	
-	CGSize size = self.bounds.size;
-	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_contentView.frame = CGRectMake(0.0f, size.height - _expandedHeight, size.width, _expandedHeight);
+	_contentView.autoresizingMask = UIViewAutoresizingNone;
 	[_contentView setState:_state withPullToRefreshView:self];
 	[self refreshLastUpdatedAt];
 	[self addSubview:_contentView];
@@ -108,12 +106,18 @@
 }
 
 
+- (void)layoutSubviews {
+	CGSize size = self.bounds.size;
+	_contentView.frame = CGRectMake(0.0f, size.height - _expandedHeight, size.width, _expandedHeight);
+}
+
+
 #pragma mark - Initializer
 
 - (id)initWithScrollView:(UIScrollView *)scrollView delegate:(id<SSPullToRefreshViewDelegate>)delegate {
 	CGRect frame = CGRectMake(0.0f, 0.0f - scrollView.bounds.size.height, scrollView.bounds.size.width,
 							  scrollView.bounds.size.height);
-	if ((self = [super initWithFrame:frame])) {
+	if ((self = [self initWithFrame:frame])) {
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		self.scrollView = scrollView;
 		self.delegate = delegate;
