@@ -59,8 +59,9 @@
 			[_activityIndicatorView stopAnimating];
 			break;
 		}
-			
-		case SSPullToRefreshViewStateLoading: {
+		
+		case SSPullToRefreshViewStateLoading:
+		case SSPullToRefreshViewStateClosing: {
 			_statusLabel.text = @"Loading...";
 			[_activityIndicatorView startAnimating];
 			break;

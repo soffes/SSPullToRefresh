@@ -36,7 +36,7 @@
 			[self _setContentInsetTop:0.0f];
 			break;
 		}
-			
+		
 		case SSPullToRefreshViewStateNormal: {
 			[self refreshLastUpdatedAt];
 			[self _setContentInsetTop:0.0f];
@@ -45,6 +45,11 @@
 			
 		case SSPullToRefreshViewStateLoading: {
 			[self _setContentInsetTop:self.expandedHeight];
+			break;
+		}
+		
+		case SSPullToRefreshViewStateClosing: {
+			[self _setContentInsetTop:0.0f];
 			break;
 		}
 	}
@@ -140,8 +145,10 @@
 	
 	// Animate back to the normal state
 	[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction animations:^{
+		self.state = SSPullToRefreshViewStateClosing;
+	} completion:^(BOOL finished) {
 		self.state = SSPullToRefreshViewStateNormal;
-	} completion:nil];
+	}];
 }
 
 

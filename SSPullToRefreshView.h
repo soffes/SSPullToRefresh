@@ -11,7 +11,8 @@
 typedef enum {
     SSPullToRefreshViewStateNormal,
 	SSPullToRefreshViewStateReady,
-	SSPullToRefreshViewStateLoading
+	SSPullToRefreshViewStateLoading,
+	SSPullToRefreshViewStateClosing
 } SSPullToRefreshViewState;
 
 @protocol SSPullToRefreshViewDelegate;
