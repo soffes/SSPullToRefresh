@@ -11,12 +11,14 @@
 @interface SSPullToRefreshView ()
 @property (nonatomic, assign, readwrite) SSPullToRefreshViewState state;
 @property (nonatomic, assign, readwrite) UIScrollView *scrollView;
+@property (nonatomic, assign, readwrite, getter = isExpanded) BOOL expanded;
 - (void)_setContentInsetTop:(CGFloat)topInset;
 - (void)_setState:(SSPullToRefreshViewState)state animated:(BOOL)animated expanded:(BOOL)expanded completion:(void (^)(void))completion;
 @end
 
 @implementation SSPullToRefreshView {
-	UIEdgeInsets _deafultContentInset;
+	dispatch_semaphore_t _animationSemaphore;
+	CGFloat _topInset;
 }
 
 @synthesize delegate = _delegate;
@@ -25,6 +27,7 @@
 @synthesize contentView = _contentView;
 @synthesize state = _state;
 @synthesize expanded = _expanded;
+@synthesize defaultContentInset = _defaultContentInset;
 
 
 #pragma mark - Accessors
@@ -64,7 +67,7 @@
 	}
 	
 	_scrollView = scrollView;	
-	_deafultContentInset = _scrollView.contentInset;
+	_defaultContentInset = _scrollView.contentInset;
 	[_scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:context];
 }
 
@@ -80,11 +83,18 @@
 }
 
 
+- (void)setDefaultContentInset:(UIEdgeInsets)defaultContentInset {
+	_defaultContentInset = defaultContentInset;
+	[self _setContentInsetTop:_topInset];
+}
+
+
 #pragma mark - NSObject
 
 - (void)dealloc {
 	self.scrollView = nil;
 	self.delegate = nil;
+	dispatch_release(_animationSemaphore);
 }
 
 
@@ -115,6 +125,9 @@
 		self.expandedHeight = 70.0f;
 		
 		[self.scrollView addSubview:self];
+		
+		_animationSemaphore = dispatch_semaphore_create(0);
+		dispatch_semaphore_signal(_animationSemaphore);
 	}
 	return self;
 }
@@ -177,25 +190,33 @@
 		return;
 	}
 	
-	[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction animations:^{
-		self.state = state;
-		self.expanded = expanded;
-	} completion:^(BOOL finished) {
-		if (completion) {
-			completion();
-		}
-	}];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+		dispatch_semaphore_wait(_animationSemaphore, DISPATCH_TIME_FOREVER);
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction animations:^{
+				self.state = state;
+				self.expanded = expanded;
+			} completion:^(BOOL finished) {
+				dispatch_semaphore_signal(_animationSemaphore);
+				if (completion) {
+					completion();
+				}
+			}];
+		});
+	});
 }
 
 
 #pragma mark - Private
 
 - (void)_setContentInsetTop:(CGFloat)topInset {
+	_topInset = topInset;
+	
 	// Default to the scroll view's initial content inset
-	UIEdgeInsets inset = _deafultContentInset;
+	UIEdgeInsets inset = _defaultContentInset;
 	
 	// Add the top inset
-	inset.top += topInset;
+	inset.top += _topInset;
 	
 	// Don't set it if that is already the current inset
 	if (UIEdgeInsetsEqualToEdgeInsets(_scrollView.contentInset, inset)) {

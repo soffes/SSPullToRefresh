@@ -24,8 +24,15 @@ typedef enum {
 @property (nonatomic, assign) id<SSPullToRefreshViewDelegate> delegate;
 @property (nonatomic, assign, readonly) SSPullToRefreshViewState state;
 @property (nonatomic, assign) CGFloat expandedHeight;
-@property (nonatomic, assign, getter = isExpanded) BOOL expanded;
+@property (nonatomic, assign, readonly, getter = isExpanded) BOOL expanded;
 @property (nonatomic, strong) UIView<SSPullToRefreshContentView> *contentView;
+
+/**
+ If you need to update the scroll view's content inset while it contains a pull to refresh view, you should set the
+ `defaultContentInset` on the pull to refresh view and it will forward it to the scroll view taking into account the
+ pull to refresh view's position.
+ */
+@property (nonatomic, assign) UIEdgeInsets defaultContentInset;
 
 - (id)initWithScrollView:(UIScrollView *)scrollView delegate:(id<SSPullToRefreshViewDelegate>)delegate;
 
