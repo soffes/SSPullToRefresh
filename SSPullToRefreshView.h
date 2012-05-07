@@ -22,11 +22,15 @@ typedef enum {
 
 @property (nonatomic, assign, readonly) UIScrollView *scrollView;
 @property (nonatomic, assign) id<SSPullToRefreshViewDelegate> delegate;
+@property (nonatomic, assign, readonly) SSPullToRefreshViewState state;
 @property (nonatomic, assign) CGFloat expandedHeight;
+@property (nonatomic, assign, getter = isExpanded) BOOL expanded;
 @property (nonatomic, strong) UIView<SSPullToRefreshContentView> *contentView;
 
 - (id)initWithScrollView:(UIScrollView *)scrollView delegate:(id<SSPullToRefreshViewDelegate>)delegate;
 
+- (void)startLoading;
+- (void)startLoadingAndExpand:(BOOL)shouldExpand;
 - (void)finishedLoading;
 - (void)refreshLastUpdatedAt;
 

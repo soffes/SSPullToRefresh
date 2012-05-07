@@ -9,9 +9,10 @@
 #import "SSPullToRefreshView.h"
 
 @interface SSPullToRefreshView ()
+@property (nonatomic, assign, readwrite) SSPullToRefreshViewState state;
 @property (nonatomic, assign, readwrite) UIScrollView *scrollView;
-@property (nonatomic, assign) SSPullToRefreshViewState state;
 - (void)_setContentInsetTop:(CGFloat)topInset;
+- (void)_setState:(SSPullToRefreshViewState)state animated:(BOOL)animated expanded:(BOOL)expanded completion:(void (^)(void))completion;
 @end
 
 @implementation SSPullToRefreshView {
@@ -23,6 +24,7 @@
 @synthesize expandedHeight = _expandedHeight;
 @synthesize contentView = _contentView;
 @synthesize state = _state;
+@synthesize expanded = _expanded;
 
 
 #pragma mark - Accessors
@@ -30,29 +32,6 @@
 - (void)setState:(SSPullToRefreshViewState)state {
 	BOOL loading = _state == SSPullToRefreshViewStateLoading;
     _state = state;
-	
-	switch (_state) {
-		case SSPullToRefreshViewStateReady: {
-			[self _setContentInsetTop:0.0f];
-			break;
-		}
-		
-		case SSPullToRefreshViewStateNormal: {
-			[self refreshLastUpdatedAt];
-			[self _setContentInsetTop:0.0f];
-			break;
-		}
-			
-		case SSPullToRefreshViewStateLoading: {
-			[self _setContentInsetTop:self.expandedHeight];
-			break;
-		}
-		
-		case SSPullToRefreshViewStateClosing: {
-			[self _setContentInsetTop:0.0f];
-			break;
-		}
-	}
 	
 	// Forward to content view
 	[_contentView setState:_state withPullToRefreshView:self];
@@ -67,6 +46,12 @@
 			[_delegate pullToRefreshViewShouldRefreshDidStartLoading:self];
 		}
 	}
+}
+
+
+- (void)setExpanded:(BOOL)expanded {
+	_expanded = expanded;
+	[self _setContentInsetTop:expanded ? self.expandedHeight : 0.0f];
 }
 
 
@@ -137,6 +122,22 @@
 
 #pragma mark - Loading
 
+- (void)startLoading {
+	[self startLoadingAndExpand:NO];
+}
+
+
+- (void)startLoadingAndExpand:(BOOL)shouldExpand {
+	// If we're not loading, this method has no effect
+    if (_state == SSPullToRefreshViewStateLoading) {
+		return;
+	}
+	
+	// Animate back to the loading state
+	[self _setState:SSPullToRefreshViewStateLoading animated:YES expanded:shouldExpand completion:nil];
+}
+
+
 - (void)finishedLoading {
 	// If we're not loading, this method has no effect
     if (_state != SSPullToRefreshViewStateLoading) {
@@ -144,9 +145,7 @@
 	}
 	
 	// Animate back to the normal state
-	[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction animations:^{
-		self.state = SSPullToRefreshViewStateClosing;
-	} completion:^(BOOL finished) {
+	[self _setState:SSPullToRefreshViewStateClosing animated:YES expanded:NO completion:^{
 		self.state = SSPullToRefreshViewStateNormal;
 	}];
 }
@@ -167,6 +166,28 @@
 }
 
 
+- (void)_setState:(SSPullToRefreshViewState)state animated:(BOOL)animated expanded:(BOOL)expanded completion:(void (^)(void))completion {
+	if (!animated) {
+		self.state = state;
+		self.expanded = expanded;
+		
+		if (completion) {
+			completion();
+		}
+		return;
+	}
+	
+	[UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction animations:^{
+		self.state = state;
+		self.expanded = expanded;
+	} completion:^(BOOL finished) {
+		if (completion) {
+			completion();
+		}
+	}];
+}
+
+
 #pragma mark - Private
 
 - (void)_setContentInsetTop:(CGFloat)topInset {
@@ -175,6 +196,11 @@
 	
 	// Add the top inset
 	inset.top += topInset;
+	
+	// Don't set it if that is already the current inset
+	if (UIEdgeInsetsEqualToEdgeInsets(_scrollView.contentInset, inset)) {
+		return;
+	}
 	
 	// Update the content inset
 	_scrollView.contentInset = inset;
@@ -241,9 +267,7 @@
 	}
 	
 	// Animate to the new state
-	[UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction animations:^{
-		self.state = newState;
-	} completion:nil];
+	[self _setState:newState animated:YES expanded:YES completion:nil];
 }
 
 @end
