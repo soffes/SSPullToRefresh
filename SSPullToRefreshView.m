@@ -7,6 +7,7 @@
 //
 
 #import "SSPullToRefreshView.h"
+#import "SSSimplePullToRefreshContentView.h"
 
 @interface SSPullToRefreshView ()
 @property (nonatomic, assign, readwrite) SSPullToRefreshViewState state;
@@ -69,6 +70,15 @@
 	_scrollView = scrollView;	
 	_defaultContentInset = _scrollView.contentInset;
 	[_scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:context];
+}
+
+
+- (UIView<SSPullToRefreshContentView> *)contentView {
+	// Use the simple content view as the default
+	if (!_contentView) {
+		self.contentView = [[SSSimplePullToRefreshContentView alloc] initWithFrame:CGRectZero];
+	}
+	return _contentView;
 }
 
 

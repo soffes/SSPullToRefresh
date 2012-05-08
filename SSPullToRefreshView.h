@@ -6,10 +6,30 @@
 //  Copyright (c) 2012 Sam Soffes. All rights reserved.
 //
 
+//
+// Example usage:
+// 
+// - (void)viewDidLoad {
+//    [super viewDidLoad];
+//    self.pullToRefreshView = [[SSPullToRefreshView alloc] initWithScrollView:self.tableView delegate:self];
+// }
+// 
+// 
+// - (void)refresh {
+//    [self.pullToRefreshView startLoading];
+//    // Load data...
+//    [self.pullToRefreshView finishLoading];
+// }
+// 
+// - (void)pullToRefreshViewShouldRefreshDidStartLoading:(SSPullToRefreshView *)view {
+//    [self refresh];
+// }
+//
+
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    SSPullToRefreshViewStateNormal,
+	SSPullToRefreshViewStateNormal,
 	SSPullToRefreshViewStateReady,
 	SSPullToRefreshViewStateLoading,
 	SSPullToRefreshViewStateClosing
@@ -34,11 +54,31 @@ typedef enum {
  */
 @property (nonatomic, assign) UIEdgeInsets defaultContentInset;
 
+/**
+ All you need to do to add this view to your scroll view is call this method (passing in the scroll view). That's it.
+ You don't have to add it as subview or anything else. The rest is magic.
+ */
 - (id)initWithScrollView:(UIScrollView *)scrollView delegate:(id<SSPullToRefreshViewDelegate>)delegate;
 
+/**
+ Call this method when you start loading. If you trigger loading another way besides pulling to refresh, call this
+ method so the pull to refresh view will be in sync with the loading status. By default, it will not expand the view
+ so it loads quietly out of view.
+ */
 - (void)startLoading;
+
+/**
+ Call this method when you start loading. If you trigger loading another way besides pulling to refresh, call this
+ method so the pull to refresh view will be in sync with the loading status. You may pass YES for shouldExpand to
+ animate down the pull to refresh view to show that it's loading.
+ */
 - (void)startLoadingAndExpand:(BOOL)shouldExpand;
+
+/**
+ Call this when you finish loading.
+ */
 - (void)finishedLoading;
+
 - (void)refreshLastUpdatedAt;
 
 @end
