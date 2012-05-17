@@ -38,7 +38,7 @@
     _state = state;
 	
 	// Forward to content view
-	[_contentView setState:_state withPullToRefreshView:self];
+	[self.contentView setState:_state withPullToRefreshView:self];
 	
 	// Update delegate
 	if (loading && _state != SSPullToRefreshViewStateLoading) {
@@ -133,9 +133,6 @@
 		self.delegate = delegate;
 		self.state = SSPullToRefreshViewStateNormal;
 		self.expandedHeight = 70.0f;
-
-		// Ensure content view is loaded
-		[self contentView];
 
 		// Add to scroll view
 		[self.scrollView addSubview:self];
