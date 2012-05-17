@@ -111,6 +111,7 @@ typedef enum {
 
 @optional
 
+- (void)setPullProgress:(CGFloat)pullProgress;
 - (void)setLastUpdatedAt:(NSDate *)date withPullToRefreshView:(SSPullToRefreshView *)view;
 
 @end

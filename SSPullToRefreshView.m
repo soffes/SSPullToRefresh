@@ -15,6 +15,7 @@
 @property (nonatomic, assign, readwrite, getter = isExpanded) BOOL expanded;
 - (void)_setContentInsetTop:(CGFloat)topInset;
 - (void)_setState:(SSPullToRefreshViewState)state animated:(BOOL)animated expanded:(BOOL)expanded completion:(void (^)(void))completion;
+- (void)_setPullProgress:(CGFloat)pullProgress;
 @end
 
 @implementation SSPullToRefreshView {
@@ -191,6 +192,27 @@
 }
 
 
+#pragma mark - Private
+
+- (void)_setContentInsetTop:(CGFloat)topInset {
+	_topInset = topInset;
+	
+	// Default to the scroll view's initial content inset
+	UIEdgeInsets inset = _defaultContentInset;
+	
+	// Add the top inset
+	inset.top += _topInset;
+	
+	// Don't set it if that is already the current inset
+	if (UIEdgeInsetsEqualToEdgeInsets(_scrollView.contentInset, inset)) {
+		return;
+	}
+	
+	// Update the content inset
+	_scrollView.contentInset = inset;
+}
+
+
 - (void)_setState:(SSPullToRefreshViewState)state animated:(BOOL)animated expanded:(BOOL)expanded completion:(void (^)(void))completion {
 	if (!animated) {
 		self.state = state;
@@ -219,24 +241,10 @@
 }
 
 
-#pragma mark - Private
-
-- (void)_setContentInsetTop:(CGFloat)topInset {
-	_topInset = topInset;
-	
-	// Default to the scroll view's initial content inset
-	UIEdgeInsets inset = _defaultContentInset;
-	
-	// Add the top inset
-	inset.top += _topInset;
-	
-	// Don't set it if that is already the current inset
-	if (UIEdgeInsetsEqualToEdgeInsets(_scrollView.contentInset, inset)) {
-		return;
+- (void)_setPullProgress:(CGFloat)pullProgress {
+	if ([self.contentView respondsToSelector:@selector(setPullProgress:)]) {
+		[self.contentView setPullProgress:pullProgress];
 	}
-	
-	// Update the content inset
-	_scrollView.contentInset = inset;
 }
 
 
@@ -256,19 +264,22 @@
 	
 	// Get the offset out of the change notification
 	CGFloat y = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y;
-	
+
 	// Scroll view is dragging
 	if (_scrollView.isDragging) {
 		// Scroll view is ready
 		if (_state == SSPullToRefreshViewStateReady) {
 			// Dragged enough to refresh
-			if (y > -_expandedHeight - 5.0f && y < 0.0f) {
+			if (y > -_expandedHeight && y < 0.0f) {
 				self.state = SSPullToRefreshViewStateNormal;
 			}
 		// Scroll view is normal
 		} else if (_state == SSPullToRefreshViewStateNormal) {
+			// Update the content view's pulling progressing
+			[self _setPullProgress:-y / _expandedHeight];
+			
 			// Dragged enough to be ready
-			if (y < -_expandedHeight - 5.0f) {
+			if (y < -_expandedHeight) {
 				self.state = SSPullToRefreshViewStateReady;
 			}
 		// Scroll view is loading
@@ -279,7 +290,6 @@
 				[self _setContentInsetTop:MIN(-y, _expandedHeight)];
 			}
 		}
-		
 		return;
 	}
 	
