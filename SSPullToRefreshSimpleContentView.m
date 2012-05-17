@@ -10,11 +10,27 @@
 
 @implementation SSPullToRefreshSimpleContentView
 
+@synthesize statusLabel = _statusLabel;
+@synthesize activityIndicatorView = _activityIndicatorView;
+
+
 #pragma mark - UIView
 
 - (id)initWithFrame:(CGRect)frame {
 	if ((self = [super initWithFrame:frame])) {
-		self.lastUpdatedAtLabel.hidden = YES;
+		CGFloat width = self.bounds.size.width;
+		
+		_statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 14.0f, width, 20.0f)];
+		_statusLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		_statusLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+		_statusLabel.textColor = [UIColor blackColor];
+		_statusLabel.backgroundColor = [UIColor clearColor];
+		_statusLabel.textAlignment = UITextAlignmentCenter;
+		[self addSubview:_statusLabel];
+		
+        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+		_activityIndicatorView.frame = CGRectMake(30.0f, 25.0f, 20.0f, 20.0f);
+		[self addSubview:_activityIndicatorView];
 	}
 	return self;
 }
