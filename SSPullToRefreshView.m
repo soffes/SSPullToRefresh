@@ -133,9 +133,14 @@
 		self.delegate = delegate;
 		self.state = SSPullToRefreshViewStateNormal;
 		self.expandedHeight = 70.0f;
-		
+
+		// Ensure content view is loaded
+		[self contentView];
+
+		// Add to scroll view
 		[self.scrollView addSubview:self];
-		
+
+		// Semaphore is used to ensure only one animation plays at a time
 		_animationSemaphore = dispatch_semaphore_create(0);
 		dispatch_semaphore_signal(_animationSemaphore);
 	}
@@ -161,7 +166,7 @@
 }
 
 
-- (void)finishedLoading {
+- (void)finishLoading {
 	// If we're not loading, this method has no effect
     if (_state != SSPullToRefreshViewStateLoading) {
 		return;

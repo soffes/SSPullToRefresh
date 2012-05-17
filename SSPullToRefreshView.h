@@ -77,7 +77,7 @@ typedef enum {
 /**
  Call this when you finish loading.
  */
-- (void)finishedLoading;
+- (void)finishLoading;
 
 - (void)refreshLastUpdatedAt;
 
