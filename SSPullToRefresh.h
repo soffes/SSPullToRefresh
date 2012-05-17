@@ -7,4 +7,5 @@
 //
 
 #import "SSPullToRefreshView.h"
-#import "SSSimplePullToRefreshContentView.h"
+#import "SSPullToRefreshDefaultContentView.h"
+#import "SSPullToRefreshSimpleContentView.h"

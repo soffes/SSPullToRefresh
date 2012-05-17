@@ -1,5 +1,5 @@
 //
-//  SSSimplePullToRefreshContentView.h
+//  SSPullToRefreshDefaultContentView
 //  SSPullToRefresh
 //
 //  Created by Sam Soffes on 4/9/12.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SSPullToRefreshView.h"
 
-@interface SSSimplePullToRefreshContentView : UIView <SSPullToRefreshContentView>
+@interface SSPullToRefreshDefaultContentView : UIView <SSPullToRefreshContentView>
 
 @property (nonatomic, strong, readonly) UILabel *statusLabel;
 @property (nonatomic, strong, readonly) UILabel *lastUpdatedAtLabel;

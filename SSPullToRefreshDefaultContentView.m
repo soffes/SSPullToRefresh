@@ -1,14 +1,14 @@
 //
-//  SSSimplePullToRefreshContentView.m
+//  SSPullToRefreshDefaultContentView
 //  SSPullToRefresh
 //
 //  Created by Sam Soffes on 4/9/12.
 //  Copyright (c) 2012 Sam Soffes. All rights reserved.
 //
 
-#import "SSSimplePullToRefreshContentView.h"
+#import "SSPullToRefreshDefaultContentView.h"
 
-@implementation SSSimplePullToRefreshContentView
+@implementation SSPullToRefreshDefaultContentView
 
 @synthesize statusLabel = _statusLabel;
 @synthesize lastUpdatedAtLabel = _lastUpdatedAtLabel;
