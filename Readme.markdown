@@ -26,7 +26,17 @@ There are dozens of pull to refresh views. I've never found one I'm happy with. 
 
 SSPullToRefresh view is highly customizable. All of the pulling logic, animations, etc are wrapped up for you in SSPullToRefreshView. It doesn't have any UI. Its `contentView` handles displaying the UI. By default, it sets up an instance of [`SSSimplePullToRefreshContentView`](https://github.com/samsoffes/sspulltorefresh/blob/master/SSSimplePullToRefreshContentView.h) as the `contentView`.
 
-You can simply subclass `SSSimplePullToRefreshContentView` or implement your own view that conforms to `SSPullToRefreshContentView`. You must implement the following method:
+### Provided Content Views
+
+[SSPullToRefreshDefaultContentView](https://github.com/samsoffes/sspulltorefresh/blob/master/SSPullToRefreshDefaultContentView.h) and [SSPullToRefreshSimpleContentView](https://github.com/samsoffes/sspulltorefresh/blob/master/SSPullToRefreshSimpleContentView.h) are provided by SSPullToRefresh. By default `SSPullToRefreshDefaultContentView` is used if you do not provide a content view. To use the provided simple content view, simply set it:
+
+``` objective-c
+pullToRefreshView.contentView = [[SSPullToRefreshSimpleContentView alloc] initWithFrame:CGRectZero];
+```
+
+### Custom Content Views
+
+You can simply subclass `SSPullToRefreshDefaultContentView` or implement your own view that conforms to `SSPullToRefreshContentView`. You must implement the following method:
 
 ``` objective-c
 - (void)setState:(SSPullToRefreshViewState)state withPullToRefreshView:(SSPullToRefreshView *)view

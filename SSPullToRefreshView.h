@@ -29,9 +29,16 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
+	/// Most will say "Pull to refresh" in this state
 	SSPullToRefreshViewStateNormal,
+
+	/// Most will say "Release to refresh" in this state
 	SSPullToRefreshViewStateReady,
+
+	/// The view is loading
 	SSPullToRefreshViewStateLoading,
+
+	/// The view has finished loading and is animating
 	SSPullToRefreshViewStateClosing
 } SSPullToRefreshViewState;
 
