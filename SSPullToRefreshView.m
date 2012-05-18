@@ -43,13 +43,13 @@
 	
 	// Update delegate
 	if (loading && _state != SSPullToRefreshViewStateLoading) {
-		if ([_delegate respondsToSelector:@selector(pullToRefreshViewShouldRefreshDidFinishLoading:)]) {
-			[_delegate pullToRefreshViewShouldRefreshDidFinishLoading:self];
+		if ([_delegate respondsToSelector:@selector(pullToRefreshViewDidFinishLoading:)]) {
+			[_delegate pullToRefreshViewDidFinishLoading:self];
 		}
 	} else if (!loading && _state == SSPullToRefreshViewStateLoading) {
 		[self _setPullProgress:1.0f];
-		if ([_delegate respondsToSelector:@selector(pullToRefreshViewShouldRefreshDidStartLoading:)]) {
-			[_delegate pullToRefreshViewShouldRefreshDidStartLoading:self];
+		if ([_delegate respondsToSelector:@selector(pullToRefreshViewDidStartLoading:)]) {
+			[_delegate pullToRefreshViewDidStartLoading:self];
 		}
 	}
 }

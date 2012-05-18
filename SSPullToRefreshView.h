@@ -96,8 +96,8 @@ typedef enum {
 @optional
 
 - (BOOL)pullToRefreshViewShouldStartLoading:(SSPullToRefreshView *)view;
-- (void)pullToRefreshViewShouldRefreshDidStartLoading:(SSPullToRefreshView *)view;
-- (void)pullToRefreshViewShouldRefreshDidFinishLoading:(SSPullToRefreshView *)view;
+- (void)pullToRefreshViewDidStartLoading:(SSPullToRefreshView *)view;
+- (void)pullToRefreshViewDidFinishLoading:(SSPullToRefreshView *)view;
 - (NSDate *)pullToRefreshViewLastUpdatedAt:(SSPullToRefreshView *)view;
 
 @end

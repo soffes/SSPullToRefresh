@@ -17,7 +17,7 @@ There are dozens of pull to refresh views. I've never found one I'm happy with. 
    [self.pullToRefreshView finishLoading];
 }
 
-- (void)pullToRefreshViewShouldRefreshDidStartLoading:(SSPullToRefreshView *)view {
+- (void)pullToRefreshViewDidStartLoading:(SSPullToRefreshView *)view {
    [self refresh];
 }
 ```
