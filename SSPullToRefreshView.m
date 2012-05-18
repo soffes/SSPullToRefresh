@@ -47,6 +47,7 @@
 			[_delegate pullToRefreshViewShouldRefreshDidFinishLoading:self];
 		}
 	} else if (!loading && _state == SSPullToRefreshViewStateLoading) {
+		[self _setPullProgress:1.0f];
 		if ([_delegate respondsToSelector:@selector(pullToRefreshViewShouldRefreshDidStartLoading:)]) {
 			[_delegate pullToRefreshViewShouldRefreshDidStartLoading:self];
 		}
@@ -119,7 +120,17 @@
 
 - (void)layoutSubviews {
 	CGSize size = self.bounds.size;
-	_contentView.frame = CGRectMake(0.0f, size.height - _expandedHeight, size.width, _expandedHeight);
+	CGSize contentSize = [self.contentView sizeThatFits:size];
+
+	if (contentSize.width < size.width) {
+		contentSize.width = size.width;
+	}
+
+	if (contentSize.height < _expandedHeight) {
+		contentSize.height = _expandedHeight;
+	}
+
+	self.contentView.frame = CGRectMake(roundf((size.width - contentSize.width) / 2.0f), size.height - contentSize.height, contentSize.width, contentSize.height);
 }
 
 
