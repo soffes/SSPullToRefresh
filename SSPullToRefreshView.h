@@ -21,7 +21,7 @@
 //    [self.pullToRefreshView finishLoading];
 // }
 // 
-// - (void)pullToRefreshViewShouldRefreshDidStartLoading:(SSPullToRefreshView *)view {
+// - (void)pullToRefreshViewDidStartLoading:(SSPullToRefreshView *)view {
 //    [self refresh];
 // }
 //
