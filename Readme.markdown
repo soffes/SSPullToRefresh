@@ -2,6 +2,22 @@
 
 There are dozens of pull to refresh views. I've never found one I'm happy with. I always end up customizing one, so I decided to write one that's highly customizable. You can just write you view and forget about the actual pull to refresh details.
 
+## How to install
+
+### With CocoaPods
+
+If you are using [CocoaPods](http://cocoapods.org) than just add next line to your `Podfile`:
+
+``` ruby
+dependency 'SSPullToRefresh'
+```
+
+And run `pod install` from command line.
+
+### Without Cocoapods
+
+At first you should think why you don't use [CocoaPods](http://cocoapods.org) yet. If you still wouldn't use it as cocoa pod, than just add all h and m files to your xcode project.
+
 ## Example Usage
 
 ``` objective-c
