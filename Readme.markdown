@@ -2,6 +2,8 @@
 
 There are dozens of pull to refresh views. I've never found one I'm happy with. I always end up customizing one, so I decided to write one that's highly customizable. You can just write you view and forget about the actual pull to refresh details.
 
+SSPullToRefresh requires iOS 5.0 or greater and uses ARC. You can use it in non-ARC projects though. See [Adding To Your Project](https://github.com/samsoffes/sspulltorefresh#adding-to-your-project).
+
 If you're using SSPullToRefresh in your application, add it to [the list](https://github.com/samsoffes/sspulltorefresh/wiki/Applications).
 
 
@@ -13,6 +15,11 @@ If you're using SSPullToRefresh in your application, add it to [the list](https:
    self.pullToRefreshView = [[SSPullToRefreshView alloc] initWithScrollView:self.tableView delegate:self];
 }
 
+- (void)viewUnload {
+   [super viewUnload];
+   self.pullToRefreshView.delegate = nil;
+   [self.pullToRefreshView removeFromSuperview];
+}
 
 - (void)refresh {
    [self.pullToRefreshView startLoading];
@@ -22,6 +29,11 @@ If you're using SSPullToRefresh in your application, add it to [the list](https:
 
 - (void)pullToRefreshViewDidStartLoading:(SSPullToRefreshView *)view {
    [self refresh];
+}
+
+- (void)dealloc {
+   self.pullToRefreshView.delegate = nil;
+   [self.pullToRefreshView removeFromSuperview];
 }
 ```
 

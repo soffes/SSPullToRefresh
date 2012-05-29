@@ -11,7 +11,7 @@
 
 @interface SSPullToRefreshView ()
 @property (nonatomic, assign, readwrite) SSPullToRefreshViewState state;
-@property (nonatomic, assign, readwrite) UIScrollView *scrollView;
+@property (nonatomic, weak, readwrite) UIScrollView *scrollView;
 @property (nonatomic, assign, readwrite, getter = isExpanded) BOOL expanded;
 - (void)_setContentInsetTop:(CGFloat)topInset;
 - (void)_setState:(SSPullToRefreshViewState)state animated:(BOOL)animated expanded:(BOOL)expanded completion:(void (^)(void))completion;
@@ -43,13 +43,13 @@
 	
 	// Update delegate
 	if (loading && _state != SSPullToRefreshViewStateLoading) {
-		if ([_delegate respondsToSelector:@selector(pullToRefreshViewDidFinishLoading:)]) {
-			[_delegate pullToRefreshViewDidFinishLoading:self];
+		if ([self.delegate respondsToSelector:@selector(pullToRefreshViewDidFinishLoading:)]) {
+			[self.delegate pullToRefreshViewDidFinishLoading:self];
 		}
 	} else if (!loading && _state == SSPullToRefreshViewStateLoading) {
 		[self _setPullProgress:1.0f];
-		if ([_delegate respondsToSelector:@selector(pullToRefreshViewDidStartLoading:)]) {
-			[_delegate pullToRefreshViewDidStartLoading:self];
+		if ([self.delegate respondsToSelector:@selector(pullToRefreshViewDidStartLoading:)]) {
+			[self.delegate pullToRefreshViewDidStartLoading:self];
 		}
 	}
 }
@@ -62,16 +62,8 @@
 
 
 - (void)setScrollView:(UIScrollView *)scrollView {
-	void *context = (__bridge void *)self;
-	if ([_scrollView respondsToSelector:@selector(removeObserver:forKeyPath:context:)]) {
-		[_scrollView removeObserver:self forKeyPath:@"contentOffset" context:context];
-	} else if (_scrollView) {
-		[_scrollView removeObserver:self forKeyPath:@"contentOffset"];
-	}
-	
-	_scrollView = scrollView;	
-	_defaultContentInset = _scrollView.contentInset;
-	[_scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:context];
+	_scrollView = scrollView;
+	_defaultContentInset = self.scrollView.contentInset;
 }
 
 
@@ -104,9 +96,14 @@
 #pragma mark - NSObject
 
 - (void)dealloc {
+	[self removeObserver:self forKeyPath:@"scrollView.contentOffset" context:(__bridge void *)self];
+
 	self.scrollView = nil;
 	self.delegate = nil;
+
+	dispatch_semaphore_wait(_animationSemaphore, DISPATCH_TIME_FOREVER);
 	dispatch_release(_animationSemaphore);
+	_animationSemaphore = NULL;
 }
 
 
@@ -148,6 +145,7 @@
 
 		// Add to scroll view
 		[self.scrollView addSubview:self];
+		[self addObserver:self forKeyPath:@"scrollView.contentOffset" options:NSKeyValueObservingOptionNew context:(__bridge void *)self];
 
 		// Semaphore is used to ensure only one animation plays at a time
 		_animationSemaphore = dispatch_semaphore_create(0);
@@ -190,8 +188,8 @@
 
 - (void)refreshLastUpdatedAt {
 	NSDate *date = nil;
-	if ([_delegate respondsToSelector:@selector(pullToRefreshViewLastUpdatedAt:)]) {
-		date = [_delegate pullToRefreshViewLastUpdatedAt:self];
+	if ([self.delegate respondsToSelector:@selector(pullToRefreshViewLastUpdatedAt:)]) {
+		date = [self.delegate pullToRefreshViewLastUpdatedAt:self];
 	} else {
 		date = [NSDate date];
 	}
@@ -215,12 +213,12 @@
 	inset.top += _topInset;
 	
 	// Don't set it if that is already the current inset
-	if (UIEdgeInsetsEqualToEdgeInsets(_scrollView.contentInset, inset)) {
+	if (UIEdgeInsetsEqualToEdgeInsets(self.scrollView.contentInset, inset)) {
 		return;
 	}
 	
 	// Update the content inset
-	_scrollView.contentInset = inset;
+	self.scrollView.contentInset = inset;
 }
 
 
@@ -267,17 +265,25 @@
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 		return;
 	}
-	
+
 	// We don't care about this notificaiton
-	if (object != _scrollView || ![keyPath isEqualToString:@"contentOffset"]) {
+	if (object != self || ![keyPath isEqualToString:@"scrollView.contentOffset"]) {
 		return;
 	}
 	
 	// Get the offset out of the change notification
-	CGFloat y = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y;
+	id point = [change objectForKey:NSKeyValueChangeNewKey];
+
+	// Ensure the point is valid
+	if (!point || point == [NSNull null] || ![point respondsToSelector:@selector(CGPointValue)]) {
+		return;
+	}
+
+	// Retrieve the y offset from the point
+	CGFloat y = [point CGPointValue].y;
 
 	// Scroll view is dragging
-	if (_scrollView.isDragging) {
+	if (self.scrollView.isDragging) {
 		// Scroll view is ready
 		if (_state == SSPullToRefreshViewStateReady) {
 			// Dragged enough to refresh
@@ -313,8 +319,8 @@
 	SSPullToRefreshViewState newState = SSPullToRefreshViewStateLoading;
 	
 	// Ask the delegate if it's cool to start loading
-	if ([_delegate respondsToSelector:@selector(pullToRefreshViewShouldStartLoading:)]) {
-		if (![_delegate pullToRefreshViewShouldStartLoading:self]) {
+	if ([self.delegate respondsToSelector:@selector(pullToRefreshViewShouldStartLoading:)]) {
+		if (![self.delegate pullToRefreshViewShouldStartLoading:self]) {
 			// Animate back to normal since the delegate said no
 			newState = SSPullToRefreshViewStateNormal;
 		}
