@@ -13,11 +13,6 @@
 //    [super viewDidLoad];
 //    self.pullToRefreshView = [[SSPullToRefreshView alloc] initWithScrollView:self.tableView delegate:self];
 // }
-//
-// - (void)viewDidUnload {
-//    [super viewDidUnload];
-//    [self.pullToRefreshView removeFromSuperview];
-// }
 // 
 // - (void)refresh {
 //    [self.pullToRefreshView startLoading];
@@ -27,6 +22,11 @@
 // 
 // - (void)pullToRefreshViewDidStartLoading:(SSPullToRefreshView *)view {
 //    [self refresh];
+// }
+//
+// - (void)viewDidUnload {
+//    [super viewDidUnload];
+//    [self.pullToRefreshView removeFromSuperview];
 // }
 //
 // - (void)dealloc {

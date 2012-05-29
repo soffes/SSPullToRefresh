@@ -15,12 +15,6 @@ If you're using SSPullToRefresh in your application, add it to [the list](https:
    self.pullToRefreshView = [[SSPullToRefreshView alloc] initWithScrollView:self.tableView delegate:self];
 }
 
-- (void)viewUnload {
-   [super viewUnload];
-   self.pullToRefreshView.delegate = nil;
-   [self.pullToRefreshView removeFromSuperview];
-}
-
 - (void)refresh {
    [self.pullToRefreshView startLoading];
    // Load data...
@@ -31,8 +25,12 @@ If you're using SSPullToRefresh in your application, add it to [the list](https:
    [self refresh];
 }
 
+- (void)viewUnload {
+   [super viewUnload];
+   [self.pullToRefreshView removeFromSuperview];
+}
+
 - (void)dealloc {
-   self.pullToRefreshView.delegate = nil;
    [self.pullToRefreshView removeFromSuperview];
 }
 ```
