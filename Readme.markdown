@@ -15,8 +15,7 @@ If you're using SSPullToRefresh in your application, add it to [the list](https:
 
 - (void)viewUnload {
    [super viewUnload];
-   self.pullToRefreshView.delegate = nil;
-   [self.pullToRefreshView removeFromSuperview];
+   self.pullToRefreshView = nil;
 }
 
 - (void)refresh {
@@ -28,7 +27,6 @@ If you're using SSPullToRefresh in your application, add it to [the list](https:
 - (void)pullToRefreshViewDidStartLoading:(SSPullToRefreshView *)view {
    [self refresh];
 }
-   self.pullToRefreshView.delegate = nil;
 ```
 
 
