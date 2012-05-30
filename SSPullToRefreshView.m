@@ -313,15 +313,17 @@
 	SSPullToRefreshViewState newState = SSPullToRefreshViewStateLoading;
 	
 	// Ask the delegate if it's cool to start loading
+	BOOL expand = YES;
 	if ([_delegate respondsToSelector:@selector(pullToRefreshViewShouldStartLoading:)]) {
 		if (![_delegate pullToRefreshViewShouldStartLoading:self]) {
 			// Animate back to normal since the delegate said no
 			newState = SSPullToRefreshViewStateNormal;
+			expand = NO;
 		}
 	}
 	
 	// Animate to the new state
-	[self _setState:newState animated:YES expanded:YES completion:nil];
+	[self _setState:newState animated:YES expanded:expand completion:nil];
 }
 
 @end
