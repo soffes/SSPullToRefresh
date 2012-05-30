@@ -13,6 +13,11 @@
 //    [super viewDidLoad];
 //    self.pullToRefreshView = [[SSPullToRefreshView alloc] initWithScrollView:self.tableView delegate:self];
 // }
+//
+// - (void)viewDidUnload {
+//    [super viewDidUnload];
+//    [self.pullToRefreshView removeFromSuperview];
+// }
 // 
 // - (void)refresh {
 //    [self.pullToRefreshView startLoading];
@@ -22,15 +27,6 @@
 // 
 // - (void)pullToRefreshViewDidStartLoading:(SSPullToRefreshView *)view {
 //    [self refresh];
-// }
-//
-// - (void)viewDidUnload {
-//    [super viewDidUnload];
-//    [self.pullToRefreshView removeFromSuperview];
-// }
-//
-// - (void)dealloc {
-//    [self.pullToRefreshView removeFromSuperview];
 // }
 //
 
@@ -92,7 +88,7 @@ typedef enum {
  
  @see initWithScrollView:delegate:
  */
-@property (nonatomic, weak, readonly) UIScrollView *scrollView;
+@property (nonatomic, assign, readonly) UIScrollView *scrollView;
 
 /**
  The delegate is sent messages when the pull to refresh view starts loading. This is automatically set with `initWithScrollView:delegate:`.
@@ -100,7 +96,7 @@ typedef enum {
  @see initWithScrollView:delegate:
  @see SSPullToRefreshViewDelegate
  */
-@property (nonatomic, weak) id<SSPullToRefreshViewDelegate> delegate;
+@property (nonatomic, assign) id<SSPullToRefreshViewDelegate> delegate;
 
 /**
  The state of the pull to refresh view.
