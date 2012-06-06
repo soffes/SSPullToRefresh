@@ -14,8 +14,8 @@
 //    self.pullToRefreshView = [[SSPullToRefreshView alloc] initWithScrollView:self.tableView delegate:self];
 // }
 // 
-// - (void)viewUnload {
-//    [super viewUnload];
+// - (void)viewDidUnload {
+//    [super viewDidUnload];
 //    self.pullToRefreshView = nil;
 // }
 // 
