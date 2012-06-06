@@ -90,4 +90,3 @@ Now run `pod install` to install the dependency.
 I took some inspiration from [PullToRefreshView by chpwn](https://github.com/chpwn/PullToRefreshView), which is based on [EGOTableViewPullRefresh](https://github.com/enormego/EGOTableViewPullRefresh), which is inspired by Tweetie's pull to refresh by [Loren Brichter](http://twitter.com/lorenb). And around we go.
 
 Enjoy.
-# SSPullToRefresh
