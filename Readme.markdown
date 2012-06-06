@@ -13,8 +13,8 @@ If you're using SSPullToRefresh in your application, add it to [the list](https:
    self.pullToRefreshView = [[SSPullToRefreshView alloc] initWithScrollView:self.tableView delegate:self];
 }
 
-- (void)viewUnload {
-   [super viewUnload];
+- (void)viewDidUnload {
+   [super viewDidUnload];
    self.pullToRefreshView = nil;
 }
 
