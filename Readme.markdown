@@ -29,6 +29,10 @@ If you're using SSPullToRefresh in your application, add it to [the list](https:
 }
 ```
 
+I generally make a property called `loading` in my view controller and just set that to `YES` inside refresh. Then in my custom setter, return if it's already `YES`. When it changes states, it will call `startLoading` and make the network call. Then when the network activity finishes, it will set it to `NO` and the customer setter handles calling `finishLoading` and doing whatever else.
+
+The fine folks at [NSScreencast](http://nsscreencast.com) have an excellent episode on SSPullToRefresh and even implementing a custom content view with Core Graphics. [Check it out](http://nsscreencast.com/episodes/24-pull-to-refresh).
+
 
 ## Customizing
 
