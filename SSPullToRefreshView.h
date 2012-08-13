@@ -96,7 +96,7 @@ typedef enum {
  @see initWithScrollView:delegate:
  @see SSPullToRefreshViewDelegate
  */
-@property (nonatomic, assign) id<SSPullToRefreshViewDelegate> delegate;
+@property (nonatomic, weak) id<SSPullToRefreshViewDelegate> delegate;
 
 /**
  The state of the pull to refresh view.
