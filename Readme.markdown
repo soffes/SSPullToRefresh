@@ -83,7 +83,7 @@ SSPullToRefresh uses [Automatic Reference Counting (ARC)](http://clang.llvm.org/
 If you are using [CocoaPods](http://cocoapods.org) than just add next line to your `Podfile`:
 
 ``` ruby
-dependency 'SSPullToRefresh'
+pod 'SSPullToRefresh'
 ```
 
 Now run `pod install` to install the dependency.
