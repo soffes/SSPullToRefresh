@@ -274,7 +274,7 @@
 	}
 	
 	// Get the offset out of the change notification
-	CGFloat y = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y;
+	CGFloat y = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y + _defaultContentInset.top;
 
 	// Scroll view is dragging
 	if (_scrollView.isDragging) {
@@ -298,7 +298,7 @@
 			if (y >= 0.0f) {
 				[self _setContentInsetTop:0.0f];
 			} else {
-				[self _setContentInsetTop:MIN(-y, _expandedHeight)];
+				[self _setContentInsetTop:fminf(-y, _expandedHeight)];
 			}
 		}
 		return;
