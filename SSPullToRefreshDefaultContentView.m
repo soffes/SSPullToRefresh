@@ -75,10 +75,14 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		dateFormatter = [[NSDateFormatter alloc] init];
-		dateFormatter.dateStyle = NSDateFormatterLongStyle;
-		
+        dateFormatter.formatterBehavior = NSDateFormatterBehavior10_4;
+        dateFormatter.dateStyle = NSDateFormatterLongStyle;
+        dateFormatter.timeStyle = NSDateFormatterShortStyle;
 	});
-	_lastUpdatedAtLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [dateFormatter stringFromDate:date]];
+    NSDateComponents *components = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) 
+											   fromDate:self];
+	return [calendar dateFromComponents:components];
+	_lastUpdatedAtLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [dateFormatter stringForObjectValue:date]];
 }
 
 @end
