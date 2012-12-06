@@ -79,9 +79,7 @@
         dateFormatter.dateStyle = NSDateFormatterLongStyle;
         dateFormatter.timeStyle = NSDateFormatterShortStyle;
 	});
-    NSDateComponents *components = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) 
-											   fromDate:self];
-	return [calendar dateFromComponents:components];
+
 	_lastUpdatedAtLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [dateFormatter stringForObjectValue:date]];
 }
 
