@@ -221,6 +221,11 @@
 	
 	// Update the content inset
 	_scrollView.contentInset = inset;
+
+	// Tell the delegate
+	if ([self.delegate respondsToSelector:@selector(pullToRefreshView:didUpdateContentInset:)]) {
+		[self.delegate pullToRefreshView:self didUpdateContentInset:_scrollView.contentInset];
+	}
 }
 
 

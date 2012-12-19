@@ -168,6 +168,11 @@ typedef enum {
  */
 - (NSDate *)pullToRefreshViewLastUpdatedAt:(SSPullToRefreshView *)view;
 
+/**
+ The pull to refresh view updated its scroll view's content inset
+ */
+- (void)pullToRefreshView:(SSPullToRefreshView *)view didUpdateContentInset:(UIEdgeInsets)contentInset;
+
 @end
 
 
