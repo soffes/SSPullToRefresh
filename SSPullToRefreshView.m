@@ -106,7 +106,6 @@
 - (void)dealloc {
 	self.scrollView = nil;
 	self.delegate = nil;
-	dispatch_release(_animationSemaphore);
 }
 
 
@@ -308,7 +307,10 @@
 		}
 		return;
 	}
-	
+        if (_scrollView.isDecelerating) {
+                [self _setPullProgress:-y / _expandedHeight];
+        }
+
 	// If the scroll view isn't ready, we're not interested
 	if (_state != SSPullToRefreshViewStateReady) {
 		return;
