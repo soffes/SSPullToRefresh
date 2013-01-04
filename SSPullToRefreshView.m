@@ -35,18 +35,18 @@
 #pragma mark - Accessors
 
 - (void)setState:(SSPullToRefreshViewState)state {
-	BOOL loading = _state == SSPullToRefreshViewStateLoading;
+	BOOL wasLoading = _state == SSPullToRefreshViewStateLoading;
     _state = state;
 	
 	// Forward to content view
 	[self.contentView setState:_state withPullToRefreshView:self];
 	
 	// Update delegate
-	if (loading && _state != SSPullToRefreshViewStateLoading) {
+	if (wasLoading && _state != SSPullToRefreshViewStateLoading) {
 		if ([_delegate respondsToSelector:@selector(pullToRefreshViewDidFinishLoading:)]) {
 			[_delegate pullToRefreshViewDidFinishLoading:self];
 		}
-	} else if (!loading && _state == SSPullToRefreshViewStateLoading) {
+	} else if (!wasLoading && _state == SSPullToRefreshViewStateLoading) {
 		[self _setPullProgress:1.0f];
 		if ([_delegate respondsToSelector:@selector(pullToRefreshViewDidStartLoading:)]) {
 			[_delegate pullToRefreshViewDidStartLoading:self];
@@ -147,6 +147,12 @@
 		self.delegate = delegate;
 		self.state = SSPullToRefreshViewStateNormal;
 		self.expandedHeight = 70.0f;
+
+		for (UIView *view in self.scrollView.subviews) {
+			if ([view isKindOfClass:[SSPullToRefreshView class]]) {
+				[[NSException exceptionWithName:@"SSPullToRefreshViewAlreadyAdded" reason:@"There is already a SSPullToRefreshView added to this scroll view. Unexpected things will happen. Don't do this." userInfo:nil] raise];
+			}
+		}
 
 		// Add to scroll view
 		[self.scrollView addSubview:self];

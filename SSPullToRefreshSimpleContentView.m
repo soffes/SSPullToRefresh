@@ -28,7 +28,7 @@
 		_statusLabel.textAlignment = UITextAlignmentCenter;
 		[self addSubview:_statusLabel];
 		
-        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+		_activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 		_activityIndicatorView.frame = CGRectMake(30.0f, 25.0f, 20.0f, 20.0f);
 		[self addSubview:_activityIndicatorView];
 	}
