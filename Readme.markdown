@@ -2,7 +2,7 @@
 
 There are dozens of pull to refresh views. I've never found one I'm happy with. I always end up customizing one, so I decided to write one that's highly customizable. You can just write you view and forget about the actual pull to refresh details.
 
-If you're using SSPullToRefresh in your application, add it to [the list](https://github.com/samsoffes/sspulltorefresh/wiki/Applications).
+If you're using SSPullToRefresh in your application, add it to [the list](https://github.com/soffes/sspulltorefresh/wiki/Applications).
 
 
 ## Example Usage
