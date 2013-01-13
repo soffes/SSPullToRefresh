@@ -106,7 +106,7 @@
 - (void)dealloc {
 	self.scrollView = nil;
 	self.delegate = nil;
-#if !OS_OBJ_HAVE_OBJC
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(_animationSemaphore);
 #endif
 }
