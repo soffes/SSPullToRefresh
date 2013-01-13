@@ -106,7 +106,7 @@
 - (void)dealloc {
 	self.scrollView = nil;
 	self.delegate = nil;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 60000
+#if !OS_OBJ_HAVE_OBJC
 	dispatch_release(_animationSemaphore);
 #endif
 }
