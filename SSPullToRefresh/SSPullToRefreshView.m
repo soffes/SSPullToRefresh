@@ -37,10 +37,10 @@
 - (void)setState:(SSPullToRefreshViewState)state {
 	BOOL loading = _state == SSPullToRefreshViewStateLoading;
     _state = state;
-	
+
 	// Forward to content view
 	[self.contentView setState:_state withPullToRefreshView:self];
-	
+
 	// Update delegate
 	if (loading && _state != SSPullToRefreshViewStateLoading) {
 		if ([_delegate respondsToSelector:@selector(pullToRefreshViewDidFinishLoading:)]) {
@@ -68,8 +68,8 @@
 	} else if (_scrollView) {
 		[_scrollView removeObserver:self forKeyPath:@"contentOffset"];
 	}
-	
-	_scrollView = scrollView;	
+
+	_scrollView = scrollView;
 	_defaultContentInset = _scrollView.contentInset;
 	[_scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:context];
 }
@@ -87,7 +87,7 @@
 - (void)setContentView:(UIView<SSPullToRefreshContentView> *)contentView {
 	[_contentView removeFromSuperview];
 	_contentView = contentView;
-	
+
 	_contentView.autoresizingMask = UIViewAutoresizingNone;
 	[_contentView setState:_state withPullToRefreshView:self];
 	[self refreshLastUpdatedAt];
@@ -171,7 +171,7 @@
     if (_state == SSPullToRefreshViewStateLoading) {
 		return;
 	}
-	
+
 	// Animate back to the loading state
 	[self _setState:SSPullToRefreshViewStateLoading animated:YES expanded:shouldExpand completion:nil];
 }
@@ -182,9 +182,10 @@
     if (_state != SSPullToRefreshViewStateLoading) {
 		return;
 	}
-	
+
 	// Animate back to the normal state
-	[self _setState:SSPullToRefreshViewStateClosing animated:YES expanded:NO completion:^{
+	__weak SSPullToRefreshView *weakSelf = self;
+	[weakSelf _setState:SSPullToRefreshViewStateClosing animated:YES expanded:NO completion:^{
 		self.state = SSPullToRefreshViewStateNormal;
 	}];
 }
@@ -197,7 +198,7 @@
 	} else {
 		date = [NSDate date];
 	}
-	
+
 	// Forward to content view
 	if ([self.contentView respondsToSelector:@selector(setLastUpdatedAt:withPullToRefreshView:)]) {
 		[self.contentView setLastUpdatedAt:date withPullToRefreshView:self];
@@ -209,18 +210,18 @@
 
 - (void)_setContentInsetTop:(CGFloat)topInset {
 	_topInset = topInset;
-	
+
 	// Default to the scroll view's initial content inset
 	UIEdgeInsets inset = _defaultContentInset;
-	
+
 	// Add the top inset
 	inset.top += _topInset;
-	
+
 	// Don't set it if that is already the current inset
 	if (UIEdgeInsetsEqualToEdgeInsets(_scrollView.contentInset, inset)) {
 		return;
 	}
-	
+
 	// Update the content inset
 	_scrollView.contentInset = inset;
 
@@ -235,13 +236,13 @@
 	if (!animated) {
 		self.state = state;
 		self.expanded = expanded;
-		
+
 		if (completion) {
 			completion();
 		}
 		return;
 	}
-	
+
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 		dispatch_semaphore_wait(_animationSemaphore, DISPATCH_TIME_FOREVER);
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -274,12 +275,12 @@
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 		return;
 	}
-	
+
 	// We don't care about this notificaiton
 	if (object != _scrollView || ![keyPath isEqualToString:@"contentOffset"]) {
 		return;
 	}
-	
+
 	// Get the offset out of the change notification
 	CGFloat y = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y + _defaultContentInset.top;
 
@@ -295,7 +296,7 @@
 		} else if (_state == SSPullToRefreshViewStateNormal) {
 			// Update the content view's pulling progressing
 			[self _setPullProgress:-y / _expandedHeight];
-			
+
 			// Dragged enough to be ready
 			if (y < -_expandedHeight) {
 				self.state = SSPullToRefreshViewStateReady;
@@ -310,15 +311,15 @@
 		}
 		return;
 	}
-	
+
 	// If the scroll view isn't ready, we're not interested
 	if (_state != SSPullToRefreshViewStateReady) {
 		return;
 	}
-	
+
 	// We're ready, prepare to switch to loading. Be default, we should refresh.
 	SSPullToRefreshViewState newState = SSPullToRefreshViewStateLoading;
-	
+
 	// Ask the delegate if it's cool to start loading
 	BOOL expand = YES;
 	if ([_delegate respondsToSelector:@selector(pullToRefreshViewShouldStartLoading:)]) {
@@ -328,7 +329,7 @@
 			expand = NO;
 		}
 	}
-	
+
 	// Animate to the new state
 	[self _setState:newState animated:YES expanded:expand completion:nil];
 }
