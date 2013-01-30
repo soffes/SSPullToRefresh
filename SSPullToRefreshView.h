@@ -30,8 +30,6 @@
 // }
 //
 
-#import <UIKit/UIKit.h>
-
 typedef enum {
 	/// Most will say "Pull to refresh" in this state
 	SSPullToRefreshViewStateNormal,
