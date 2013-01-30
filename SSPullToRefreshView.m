@@ -190,8 +190,9 @@
 	}
 	
 	// Animate back to the normal state
+    __weak SSPullToRefreshView* blockSelf = self;
 	[self _setState:SSPullToRefreshViewStateClosing animated:YES expanded:NO completion:^{
-		self.state = SSPullToRefreshViewStateNormal;
+		blockSelf.state = SSPullToRefreshViewStateNormal;
 	}];
 }
 
