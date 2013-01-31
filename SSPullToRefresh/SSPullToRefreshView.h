@@ -30,8 +30,6 @@
 // }
 //
 
-#import <UIKit/UIKit.h>
-
 typedef enum {
 	/// Most will say "Pull to refresh" in this state
 	SSPullToRefreshViewStateNormal,
@@ -172,6 +170,11 @@ typedef enum {
  The pull to refresh view updated its scroll view's content inset
  */
 - (void)pullToRefreshView:(SSPullToRefreshView *)view didUpdateContentInset:(UIEdgeInsets)contentInset;
+
+/**
+ The pull to refresh view finished animating to the specified state
+ */
+- (void)pullToRefreshView:(SSPullToRefreshView *)view didAnimateToState:(SSPullToRefreshViewState)toState fromState:(SSPullToRefreshViewState)fromState;
 
 @end
 
