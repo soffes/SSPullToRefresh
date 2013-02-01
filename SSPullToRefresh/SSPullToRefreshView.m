@@ -314,11 +314,7 @@
 			}
 		// Scroll view is loading
 		} else if (_state == SSPullToRefreshViewStateLoading) {
-			if (y >= 0.0f) {
-				[self _setContentInsetTop:0.0f];
-			} else {
-				[self _setContentInsetTop:fminf(-y, _expandedHeight)];
-			}
+			[self _setContentInsetTop:_expandedHeight];
 		}
 		return;
 	}
