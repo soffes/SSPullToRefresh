@@ -168,18 +168,23 @@
 #pragma mark - Loading
 
 - (void)startLoading {
-	[self startLoadingAndExpand:NO];
+	[self startLoadingAndExpand:NO animated:NO];
 }
 
 
 - (void)startLoadingAndExpand:(BOOL)shouldExpand {
+	[self startLoadingAndExpand:shouldExpand animated:YES];
+}
+
+
+- (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated {
 	// If we're not loading, this method has no effect
     if (_state == SSPullToRefreshViewStateLoading) {
 		return;
 	}
-	
+
 	// Animate back to the loading state
-	[self _setState:SSPullToRefreshViewStateLoading animated:YES expanded:shouldExpand completion:nil];
+	[self _setState:SSPullToRefreshViewStateLoading animated:animated expanded:shouldExpand completion:nil];
 }
 
 

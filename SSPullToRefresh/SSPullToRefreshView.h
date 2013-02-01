@@ -127,6 +127,10 @@ typedef enum {
  animate down the pull to refresh view to show that it's loading.
  */
 - (void)startLoadingAndExpand:(BOOL)shouldExpand;
+/**
+ Call this method if you wish to control animating the expansion.
+ */
+- (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated;
 
 /**
  Call this when you finish loading.
