@@ -199,6 +199,7 @@
 	[self _setState:SSPullToRefreshViewStateClosing animated:YES expanded:NO completion:^{
 		blockSelf.state = SSPullToRefreshViewStateNormal;
 	}];
+	[self refreshLastUpdatedAt];
 }
 
 
