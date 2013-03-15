@@ -25,7 +25,7 @@
 		_statusLabel.font = [UIFont boldSystemFontOfSize:14.0f];
 		_statusLabel.textColor = [UIColor blackColor];
 		_statusLabel.backgroundColor = [UIColor clearColor];
-		_statusLabel.textAlignment = UITextAlignmentCenter;
+		_statusLabel.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:_statusLabel];
 		
 		_lastUpdatedAtLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 34.0f, width, 20.0f)];
@@ -33,7 +33,7 @@
 		_lastUpdatedAtLabel.font = [UIFont systemFontOfSize:12.0f];
 		_lastUpdatedAtLabel.textColor = [UIColor lightGrayColor];
 		_lastUpdatedAtLabel.backgroundColor = [UIColor clearColor];
-		_lastUpdatedAtLabel.textAlignment = UITextAlignmentCenter;
+		_lastUpdatedAtLabel.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:_lastUpdatedAtLabel];
 		
         _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
