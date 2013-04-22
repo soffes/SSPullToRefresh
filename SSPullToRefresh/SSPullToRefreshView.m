@@ -78,7 +78,7 @@
 - (UIView<SSPullToRefreshContentView> *)contentView {
 	// Use the simple content view as the default
 	if (!_contentView) {
-		self.contentView = [[SSPullToRefreshDefaultContentView alloc] initWithFrame:CGRectZero];
+		self.contentView = [[[SSPullToRefreshDefaultContentView alloc] initWithFrame:CGRectZero] autorelease];
 	}
 	return _contentView;
 }
