@@ -88,7 +88,6 @@
 	[_contentView removeFromSuperview];
 	_contentView = contentView;
 	
-	_contentView.autoresizingMask = UIViewAutoresizingNone;
 	[_contentView setState:_state withPullToRefreshView:self];
 	[self refreshLastUpdatedAt];
 	[self addSubview:_contentView];
