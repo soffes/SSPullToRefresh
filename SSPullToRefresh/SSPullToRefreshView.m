@@ -319,7 +319,8 @@
 			}
 		// Scroll view is loading
 		} else if (_state == SSPullToRefreshViewStateLoading) {
-			[self _setContentInsetTop:_expandedHeight];
+            CGFloat insetAdjustment = y < 0 ? fmaxf(0, _expandedHeight+y) : _expandedHeight;
+			[self _setContentInsetTop:_expandedHeight - insetAdjustment];
 		}
 		return;
 	}
