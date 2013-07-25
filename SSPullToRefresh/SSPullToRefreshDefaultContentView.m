@@ -49,21 +49,21 @@
 - (void)setState:(SSPullToRefreshViewState)state withPullToRefreshView:(SSPullToRefreshView *)view {	
 	switch (state) {
 		case SSPullToRefreshViewStateReady: {
-			_statusLabel.text = @"Release to refresh...";
-			[_activityIndicatorView stopAnimating];
+			self.statusLabel.text = @"Release to refresh...";
+			[self.activityIndicatorView stopAnimating];
 			break;
 		}
 			
 		case SSPullToRefreshViewStateNormal: {
-			_statusLabel.text = @"Pull down to refresh...";
-			[_activityIndicatorView stopAnimating];
+			self.statusLabel.text = @"Pull down to refresh...";
+			[self.activityIndicatorView stopAnimating];
 			break;
 		}
 		
 		case SSPullToRefreshViewStateLoading:
 		case SSPullToRefreshViewStateClosing: {
-			_statusLabel.text = @"Loading...";
-			[_activityIndicatorView startAnimating];
+			self.statusLabel.text = @"Loading...";
+			[self.activityIndicatorView startAnimating];
 			break;
 		}
 	}
@@ -80,7 +80,7 @@
         dateFormatter.timeStyle = NSDateFormatterShortStyle;
 	});
 
-	_lastUpdatedAtLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [dateFormatter stringForObjectValue:date]];
+	self.lastUpdatedAtLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [dateFormatter stringForObjectValue:date]];
 }
 
 @end
