@@ -126,10 +126,6 @@ typedef enum {
  method so the pull to refresh view will be in sync with the loading status. You may pass YES for shouldExpand to
  animate down the pull to refresh view to show that it's loading.
  */
-- (void)startLoadingAndExpand:(BOOL)shouldExpand;
-/**
- Call this method if you wish to control animating the expansion.
- */
 - (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated;
 
 /**

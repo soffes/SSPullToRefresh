@@ -171,11 +171,6 @@
 }
 
 
-- (void)startLoadingAndExpand:(BOOL)shouldExpand {
-	[self startLoadingAndExpand:shouldExpand animated:YES];
-}
-
-
 - (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated {
 	// If we're not loading, this method has no effect
     if (_state == SSPullToRefreshViewStateLoading) {
