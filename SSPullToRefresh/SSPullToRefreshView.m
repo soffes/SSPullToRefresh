@@ -17,7 +17,9 @@
 @property (nonatomic) dispatch_semaphore_t animationSemaphore;
 @end
 
-@implementation SSPullToRefreshView
+@implementation SSPullToRefreshView {
+	BOOL _ignoreChange;
+}
 
 @synthesize delegate = _delegate;
 @synthesize scrollView = _scrollView;
@@ -57,6 +59,13 @@
 - (void)setExpanded:(BOOL)expanded {
 	_expanded = expanded;
 	[self _setContentInsetTop:expanded ? self.expandedHeight : 0.0f];
+
+	if (_expanded && _ignoreChange) {
+		CGRect bounds = self.scrollView.bounds;
+		bounds.origin.y += self.expandedHeight;
+		self.scrollView.bounds = bounds;
+//		self.scrollView.contentOffset = bounds.origin;
+	}
 }
 
 
@@ -283,6 +292,10 @@
 #pragma mark - NSKeyValueObserving
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if (_ignoreChange) {
+		return;
+	}
+
 	// Call super if we didn't register for this notification
 	if (context != (__bridge void *)self) {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -295,7 +308,8 @@
 	}
 	
 	// Get the offset out of the change notification
-	CGFloat y = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y + self.defaultContentInset.top;
+	CGPoint offset = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
+	CGFloat y = offset.y + self.defaultContentInset.top;
 
 	// Scroll view is dragging
 	if (self.scrollView.isDragging) {
@@ -305,20 +319,34 @@
 			if (y > -self.expandedHeight && y < 0.0f) {
 				self.state = SSPullToRefreshViewStateNormal;
 			}
+			return;
+		}
+
 		// Scroll view is normal
-		} else if (self.state == SSPullToRefreshViewStateNormal) {
+		if (self.state == SSPullToRefreshViewStateNormal) {
 			// Update the content view's pulling progressing
 			[self _setPullProgress:-y / self.expandedHeight];
 			
 			// Dragged enough to be ready
 			if (y < -self.expandedHeight) {
 				self.state = SSPullToRefreshViewStateReady;
+
+				_ignoreChange = YES;
+				NSLog(@"328 offset: %@", NSStringFromCGPoint(offset));
+				self.expanded = YES;
+				NSLog(@"330 offset: %@", NSStringFromCGPoint(self.scrollView.contentOffset));
+				_ignoreChange = NO;
 			}
+			return;
+		}
+
 		// Scroll view is loading
-		} else if (self.state == SSPullToRefreshViewStateLoading) {
+		if (self.state == SSPullToRefreshViewStateLoading) {
             CGFloat insetAdjustment = y < 0 ? fmaxf(0, self.expandedHeight + y) : self.expandedHeight;
 			[self _setContentInsetTop:self.expandedHeight - insetAdjustment];
+			return;
 		}
+
 		return;
 	}
 	
@@ -326,6 +354,8 @@
 	if (self.state != SSPullToRefreshViewStateReady) {
 		return;
 	}
+
+	NSLog(@"let go and animating to loading");
 	
 	// We're ready, prepare to switch to loading. Be default, we should refresh.
 	SSPullToRefreshViewState newState = SSPullToRefreshViewStateLoading;
