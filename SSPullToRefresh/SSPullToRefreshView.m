@@ -9,7 +9,7 @@
 #import "SSPullToRefreshView.h"
 #import "SSPullToRefreshDefaultContentView.h"
 
-@interface SSPullToRefreshView ()
+@interface SSPullToRefreshView () <UIScrollViewDelegate>
 @property (nonatomic, readwrite) SSPullToRefreshViewState state;
 @property (nonatomic, readwrite) UIScrollView *scrollView;
 @property (nonatomic, readwrite, getter = isExpanded) BOOL expanded;
@@ -61,16 +61,9 @@
 
 
 - (void)setScrollView:(UIScrollView *)scrollView {
-	void *context = (__bridge void *)self;
-	if ([_scrollView respondsToSelector:@selector(removeObserver:forKeyPath:context:)]) {
-		[_scrollView removeObserver:self forKeyPath:@"contentOffset" context:context];
-	} else if (_scrollView) {
-		[_scrollView removeObserver:self forKeyPath:@"contentOffset"];
-	}
-	
-	_scrollView = scrollView;	
+	_scrollView = scrollView;
+    _scrollView.delegate = self;
 	self.defaultContentInset = _scrollView.contentInset;
-	[_scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:context];
 }
 
 
@@ -121,15 +114,15 @@
 - (void)layoutSubviews {
 	CGSize size = self.bounds.size;
 	CGSize contentSize = [self.contentView sizeThatFits:size];
-
+    
 	if (contentSize.width < size.width) {
 		contentSize.width = size.width;
 	}
-
+    
 	if (contentSize.height < self.expandedHeight) {
 		contentSize.height = self.expandedHeight;
 	}
-
+    
 	self.contentView.frame = CGRectMake(roundf((size.width - contentSize.width) / 2.0f), size.height - contentSize.height, contentSize.width, contentSize.height);
 }
 
@@ -145,16 +138,16 @@
 		self.delegate = delegate;
 		self.state = SSPullToRefreshViewStateNormal;
 		self.expandedHeight = 70.0f;
-
+        
 		for (UIView *view in self.scrollView.subviews) {
 			if ([view isKindOfClass:[SSPullToRefreshView class]]) {
 				[[NSException exceptionWithName:@"SSPullToRefreshViewAlreadyAdded" reason:@"There is already a SSPullToRefreshView added to this scroll view. Unexpected things will happen. Don't do this." userInfo:nil] raise];
 			}
 		}
-
+        
 		// Add to scroll view
 		[self.scrollView addSubview:self];
-
+        
 		// Semaphore is used to ensure only one animation plays at a time
 		_animationSemaphore = dispatch_semaphore_create(0);
 		dispatch_semaphore_signal(_animationSemaphore);
@@ -175,7 +168,7 @@
     if (self.state == SSPullToRefreshViewStateLoading) {
 		return;
 	}
-
+    
 	// Animate back to the loading state
 	[self _setState:SSPullToRefreshViewStateLoading animated:animated expanded:shouldExpand completion:nil];
 }
@@ -230,12 +223,12 @@
 	
 	// Update the content inset
 	self.scrollView.contentInset = inset;
-
+    
 	// If scrollView is on top, scroll again to the top (needed for scrollViews with content > scrollView).
 	if (self.scrollView.contentOffset.y == 0.0f) {
 		[self.scrollView scrollRectToVisible:CGRectMake(0.0f, 0.0f, 1.0f, 1.0f) animated:YES];
 	}
-
+    
 	// Tell the delegate
 	id<SSPullToRefreshViewDelegate> delegate = self.delegate;
 	if ([delegate respondsToSelector:@selector(pullToRefreshView:didUpdateContentInset:)]) {
@@ -254,7 +247,7 @@
 		}
 		return;
 	}
-
+    
 	dispatch_semaphore_t semaphore = self.animationSemaphore;
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 		dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
@@ -280,54 +273,43 @@
 }
 
 
-#pragma mark - NSKeyValueObserving
+#pragma mark - UIScrollViewDelegate
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	// Call super if we didn't register for this notification
-	if (context != (__bridge void *)self) {
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-		return;
-	}
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat y = scrollView.contentOffset.y + self.defaultContentInset.top;
+    
+    // Scroll view is ready
+    if (self.state == SSPullToRefreshViewStateReady) {
+        // Dragged enough to refresh
+        if (y > -self.expandedHeight && y < 0.0f) {
+            self.state = SSPullToRefreshViewStateNormal;
+        }
+        // Scroll view is normal
+    } else if (self.state == SSPullToRefreshViewStateNormal) {
+        // Update the content view's pulling progressing
+        [self _setPullProgress:-y / self.expandedHeight];
+        
+        // Dragged enough to be ready
+        if (y < -self.expandedHeight) {
+            self.state = SSPullToRefreshViewStateReady;
+        }
+        // Scroll view is loading
+    } else if (self.state == SSPullToRefreshViewStateLoading) {
+        CGFloat insetAdjustment = y < 0 ? fmaxf(0, self.expandedHeight + y) : self.expandedHeight;
+        [self _setContentInsetTop:self.expandedHeight - insetAdjustment];
+    }
 	
-	// We don't care about this notificaiton
-	if (object != self.scrollView || ![keyPath isEqualToString:@"contentOffset"]) {
-		return;
-	}
-	
-	// Get the offset out of the change notification
-	CGFloat y = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y + self.defaultContentInset.top;
+}
 
-	// Scroll view is dragging
-	if (self.scrollView.isDragging) {
-		// Scroll view is ready
-		if (self.state == SSPullToRefreshViewStateReady) {
-			// Dragged enough to refresh
-			if (y > -self.expandedHeight && y < 0.0f) {
-				self.state = SSPullToRefreshViewStateNormal;
-			}
-		// Scroll view is normal
-		} else if (self.state == SSPullToRefreshViewStateNormal) {
-			// Update the content view's pulling progressing
-			[self _setPullProgress:-y / self.expandedHeight];
-			
-			// Dragged enough to be ready
-			if (y < -self.expandedHeight) {
-				self.state = SSPullToRefreshViewStateReady;
-			}
-		// Scroll view is loading
-		} else if (self.state == SSPullToRefreshViewStateLoading) {
-            CGFloat insetAdjustment = y < 0 ? fmaxf(0, self.expandedHeight + y) : self.expandedHeight;
-			[self _setContentInsetTop:self.expandedHeight - insetAdjustment];
-		}
-		return;
-	}
-	
-	// If the scroll view isn't ready, we're not interested
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    // If the scroll view isn't ready, we're not interested
 	if (self.state != SSPullToRefreshViewStateReady) {
 		return;
 	}
-	
-	// We're ready, prepare to switch to loading. Be default, we should refresh.
+    
+    // We're ready, prepare to switch to loading. Be default, we should refresh.
 	SSPullToRefreshViewState newState = SSPullToRefreshViewStateLoading;
 	
 	// Ask the delegate if it's cool to start loading
