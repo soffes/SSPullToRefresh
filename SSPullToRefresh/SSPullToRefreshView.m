@@ -233,7 +233,7 @@
 
 	// If scrollView is on top, scroll again to the top (needed for scrollViews with content > scrollView).
 	if (self.scrollView.contentOffset.y == 0.0f) {
-		[self.scrollView scrollRectToVisible:CGRectMake(0.0f, 0.0f, 1.0f, 1.0f) animated:YES];
+		[self.scrollView scrollRectToVisible:CGRectMake(0.0f, 0.0f, 1.0f, 1.0f) animated:NO];
 	}
 
 	// Tell the delegate
