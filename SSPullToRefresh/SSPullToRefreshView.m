@@ -308,7 +308,7 @@
 		// Scroll view is normal
 		} else if (self.state == SSPullToRefreshViewStateNormal) {
 			// Update the content view's pulling progressing
-			[self _setPullProgress:-y / self.expandedHeight];
+			[self _setPullProgress:fminf(-y / self.expandedHeight, 1.0f)];
 			
 			// Dragged enough to be ready
 			if (y < -self.expandedHeight) {
