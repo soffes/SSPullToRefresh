@@ -48,14 +48,14 @@
 - (void)setState:(SSPullToRefreshViewState)state withPullToRefreshView:(SSPullToRefreshView *)view {	
 	switch (state) {
 		case SSPullToRefreshViewStateReady: {
-			self.statusLabel.text = @"Release to refresh";
+			self.statusLabel.text = NSLocalizedString(@"Release to refresh", nil);
 			[self.activityIndicatorView startAnimating];
 			self.activityIndicatorView.alpha = 0.0f;
 			break;
 		}
 			
 		case SSPullToRefreshViewStateNormal: {
-			self.statusLabel.text = @"Pull down to refresh";
+			self.statusLabel.text = NSLocalizedString(@"Pull down to refresh", nil);
 			self.statusLabel.alpha = 1.0f;
 			[self.activityIndicatorView stopAnimating];
 			self.activityIndicatorView.alpha = 0.0f;

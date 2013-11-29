@@ -49,20 +49,20 @@
 - (void)setState:(SSPullToRefreshViewState)state withPullToRefreshView:(SSPullToRefreshView *)view {	
 	switch (state) {
 		case SSPullToRefreshViewStateReady: {
-			self.statusLabel.text = NSLocalizedString(@"Release to refresh...", nil);
+			self.statusLabel.text = NSLocalizedString(@"Release to refresh…", nil);
 			[self.activityIndicatorView stopAnimating];
 			break;
 		}
 			
 		case SSPullToRefreshViewStateNormal: {
-			self.statusLabel.text = NSLocalizedString(@"Pull down to refresh...", nil);
+			self.statusLabel.text = NSLocalizedString(@"Pull down to refresh…", nil);
 			[self.activityIndicatorView stopAnimating];
 			break;
 		}
 		
 		case SSPullToRefreshViewStateLoading:
 		case SSPullToRefreshViewStateClosing: {
-			self.statusLabel.text = NSLocalizedString(@"Loading...", nil);
+			self.statusLabel.text = NSLocalizedString(@"Loading…", nil);
 			[self.activityIndicatorView startAnimating];
 			break;
 		}
@@ -80,8 +80,7 @@
         dateFormatter.timeStyle = NSDateFormatterShortStyle;
 	});
 
-	self.lastUpdatedAtLabel.text = [NSString stringWithFormat:@"%@ %@",
-									NSLocalizedString(@"Last Updated:", nil),
+	self.lastUpdatedAtLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Last Updated: %@", nil),
 									[dateFormatter stringForObjectValue:date]];
 }
 
