@@ -291,9 +291,16 @@
 
 
 - (void)_setPullProgress:(CGFloat)pullProgress {
-	if ([self.contentView respondsToSelector:@selector(setPullProgress:)]) {
-		[self.contentView setPullProgress:pullProgress];
+	// Don't do anything if the content view doesn't implement the method
+	if (![self.contentView respondsToSelector:@selector(setPullProgress:)]) {
+		return;
 	}
+	
+	// Ensure the value is between 0 and 1.
+	pullProgress = fmaxf(0.0f, fminf(pullProgress, 1.0f));
+	
+	// Notify the content view
+	[self.contentView setPullProgress:pullProgress];
 }
 
 
@@ -325,7 +332,7 @@
 		// Scroll view is normal
 		} else if (self.state == SSPullToRefreshViewStateNormal) {
 			// Update the content view's pulling progressing
-			[self _setPullProgress:fminf(-y / self.expandedHeight, 1.0f)];
+			[self _setPullProgress:-y / self.expandedHeight];
 			
 			// Dragged enough to be ready
 			if (y < -self.expandedHeight) {
@@ -337,6 +344,8 @@
 			[self _setContentInsetTop:self.expandedHeight - insetAdjustment];
 		}
 		return;
+	} else if (self.scrollView.isDecelerating) {
+		[self _setPullProgress:-y / self.expandedHeight];
 	}
 	
 	// If the scroll view isn't ready, we're not interested
