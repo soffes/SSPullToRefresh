@@ -247,6 +247,11 @@
 - (void)_setState:(SSPullToRefreshViewState)state animated:(BOOL)animated expanded:(BOOL)expanded completion:(void (^)(void))completion {
 	SSPullToRefreshViewState fromState = self.state;
 	
+	id delegate = self.delegate;
+	if ([delegate respondsToSelector:@selector(pullToRefreshView:willTransitionToState:fromState:animated:)]) {
+		[delegate pullToRefreshView:self willTransitionToState:state fromState:fromState animated:animated];
+	}
+	
 	if (!animated) {
 		self.state = state;
 		self.expanded = expanded;
@@ -254,11 +259,12 @@
 		if (completion) {
 			completion();
 		}
+		
+		if ([delegate respondsToSelector:@selector(pullToRefreshView:didTransitionToState:fromState:animated:)]) {
+			[delegate pullToRefreshView:self didTransitionToState:state fromState:fromState animated:animated];
+		}
+		
 		return;
-	}
-	
-	if ([self.delegate respondsToSelector:@selector(pullToRefreshView:willTransitionToState:fromState:animated:)]) {
-		[self.delegate pullToRefreshView:self willTransitionToState:state fromState:fromState animated:animated];
 	}
 	
 	__weak SSPullToRefreshView *weakSelf = self;
@@ -275,7 +281,6 @@
 					completion();
 				}
 				
-				id delegate = weakSelf.delegate;
 				if ([delegate respondsToSelector:@selector(pullToRefreshView:didTransitionToState:fromState:animated:)]) {
 					[delegate pullToRefreshView:weakSelf didTransitionToState:state fromState:fromState animated:animated];
 				}
