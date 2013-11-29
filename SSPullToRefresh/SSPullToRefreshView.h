@@ -171,6 +171,16 @@ typedef enum {
  */
 - (void)pullToRefreshView:(SSPullToRefreshView *)view didUpdateContentInset:(UIEdgeInsets)contentInset;
 
+/**
+ The pull to refresh view will change state.
+ */
+- (void)pullToRefreshView:(SSPullToRefreshView *)view willTransitionToState:(SSPullToRefreshViewState)toState fromState:(SSPullToRefreshViewState)fromState animated:(BOOL)animated;
+
+/**
+ The pull to refresh view did change state.
+ */
+- (void)pullToRefreshView:(SSPullToRefreshView *)view didTransitionToState:(SSPullToRefreshViewState)toState fromState:(SSPullToRefreshViewState)fromState animated:(BOOL)animated;
+
 @end
 
 

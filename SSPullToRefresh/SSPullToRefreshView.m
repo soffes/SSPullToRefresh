@@ -245,6 +245,8 @@
 
 
 - (void)_setState:(SSPullToRefreshViewState)state animated:(BOOL)animated expanded:(BOOL)expanded completion:(void (^)(void))completion {
+	SSPullToRefreshViewState fromState = self.state;
+	
 	if (!animated) {
 		self.state = state;
 		self.expanded = expanded;
@@ -254,7 +256,12 @@
 		}
 		return;
 	}
-
+	
+	if ([self.delegate respondsToSelector:@selector(pullToRefreshView:willTransitionToState:fromState:animated:)]) {
+		[self.delegate pullToRefreshView:self willTransitionToState:state fromState:fromState animated:animated];
+	}
+	
+	__weak SSPullToRefreshView *weakSelf = self;
 	dispatch_semaphore_t semaphore = self.animationSemaphore;
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 		dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
@@ -266,6 +273,11 @@
 				dispatch_semaphore_signal(semaphore);
 				if (completion) {
 					completion();
+				}
+				
+				id delegate = weakSelf.delegate;
+				if ([delegate respondsToSelector:@selector(pullToRefreshView:didTransitionToState:fromState:animated:)]) {
+					[delegate pullToRefreshView:weakSelf didTransitionToState:state fromState:fromState animated:animated];
 				}
 			}];
 		});
