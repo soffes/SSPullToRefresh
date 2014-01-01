@@ -3,28 +3,28 @@
 //  SSPullToRefresh
 //
 //  Created by Sam Soffes on 4/9/12.
-//  Copyright (c) 2012 Sam Soffes. All rights reserved.
+//  Copyright (c) 2012-2014 Sam Soffes. All rights reserved.
 //
 
 //
 // Example usage:
-// 
+//
 // - (void)viewDidLoad {
 //    [super viewDidLoad];
 //    self.pullToRefreshView = [[SSPullToRefreshView alloc] initWithScrollView:self.tableView delegate:self];
 // }
-// 
+//
 // - (void)viewDidUnload {
 //    [super viewDidUnload];
 //    self.pullToRefreshView = nil;
 // }
-// 
+//
 // - (void)refresh {
 //    [self.pullToRefreshView startLoading];
 //    // Load data...
 //    [self.pullToRefreshView finishLoading];
 // }
-// 
+//
 // - (void)pullToRefreshViewDidStartLoading:(SSPullToRefreshView *)view {
 //    [self refresh];
 // }
@@ -51,7 +51,7 @@ typedef enum {
 
 /**
  The content view displayed when the `scrollView` is pulled down. By default this is an instance of `SSPullToRefreshDefaultContentView`.
- 
+
  @see SSPullToRefreshContentView
  */
 @property (nonatomic, strong) UIView<SSPullToRefreshContentView> *contentView;
@@ -65,17 +65,17 @@ typedef enum {
 
 /**
  The height of the fully expanded content view. The default is `70.0`.
- 
+
  The `contentView`'s `sizeThatFits:` will be respected when displayed but does not effect the expanded height. You can use this
  to draw outside of the expanded area. If you don't implement `sizeThatFits:` it will automatically display at the default size.
- 
+
  @see expanded
  */
 @property (nonatomic, assign) CGFloat expandedHeight;
 
 /**
  A boolean indicating if the pull to refresh view is expanded.
- 
+
  @see expandedHeight
  @see startLoadingAndExpand:
  */
@@ -83,14 +83,14 @@ typedef enum {
 
 /**
  The scroll view containing the pull to refresh view. This is automatically set with `initWithScrollView:delegate:`.
- 
+
  @see initWithScrollView:delegate:
  */
 @property (nonatomic, assign, readonly) UIScrollView *scrollView;
 
 /**
  The delegate is sent messages when the pull to refresh view starts loading. This is automatically set with `initWithScrollView:delegate:`.
- 
+
  @see initWithScrollView:delegate:
  @see SSPullToRefreshViewDelegate
  */
@@ -98,7 +98,7 @@ typedef enum {
 
 /**
  The state of the pull to refresh view.
- 
+
  @see startLoading
  @see startLoadingAndExpand:
  @see finishLoading
@@ -109,7 +109,7 @@ typedef enum {
 /**
  All you need to do to add this view to your scroll view is call this method (passing in the scroll view). That's it.
  You don't have to add it as subview or anything else. The rest is magic.
- 
+
  You should only initalize with this method and never move it to another scroll view during its lifetime.
  */
 - (id)initWithScrollView:(UIScrollView *)scrollView delegate:(id<SSPullToRefreshViewDelegate>)delegate;

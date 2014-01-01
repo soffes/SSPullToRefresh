@@ -3,7 +3,7 @@
 //  SSPullToRefresh
 //
 //  Created by Sam Soffes on 4/9/12.
-//  Copyright (c) 2012 Sam Soffes. All rights reserved.
+//  Copyright (c) 2012-2014 Sam Soffes. All rights reserved.
 //
 
 // Main pull to refresh view. This class contains all of the pulling logic.
