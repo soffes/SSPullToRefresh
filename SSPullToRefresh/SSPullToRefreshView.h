@@ -133,7 +133,7 @@ typedef enum {
  Call this when you finish loading.
  */
 - (void)finishLoading;
-- (void)finishLoadingWithCompletion:(void(^)())block;
+- (void)finishLoadingAnimated:(BOOL)animated completion:(void(^)())block;
 
 /**
  Manually update the last updated at time. This will automatically get called when the pull to refresh view finishes laoding.

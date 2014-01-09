@@ -186,10 +186,10 @@
 
 
 - (void)finishLoading {
-	[self finishLoadingWithCompletion:nil];
+	[self finishLoadingAnimated:YES completion:nil];
 }
 
-- (void)finishLoadingWithCompletion:(void (^)())block {
+- (void)finishLoadingAnimated:(BOOL)animated completion:(void(^)())block {
 	// If we're not loading, this method has no effect
     if (self.state != SSPullToRefreshViewStateLoading) {
 		return;
@@ -197,7 +197,7 @@
 	
 	// Animate back to the normal state
 	__weak SSPullToRefreshView *blockSelf = self;
-	[self _setState:SSPullToRefreshViewStateClosing animated:YES expanded:NO completion:^{
+	[self _setState:SSPullToRefreshViewStateClosing animated:animated expanded:NO completion:^{
 		blockSelf.state = SSPullToRefreshViewStateNormal;
 		
 		if (block) {
