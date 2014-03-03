@@ -79,14 +79,14 @@ Now run `pod install` to install the dependency.
 
 ### Manually
 
-[Download](https://github.com/samsoffes/sspulltorefresh/zipball/master) the source files or add it as a [git submodule](http://schacon.github.com/git/user-manual.html#submodules). Here's how to add it as a submodule:
+[Download](https://github.com/soffes/sspulltorefresh/zipball/master) the source files or add it as a [git submodule](http://schacon.github.com/git/user-manual.html#submodules). Here's how to add it as a submodule:
 
     $ cd YourProject
-    $ git submodule add https://github.com/samsoffes/sspulltorefresh.git Vendor/SSPullToRefresh
+    $ git submodule add https://github.com/soffes/sspulltorefresh.git Vendor/SSPullToRefresh
 
 Add all of the Objective-C files to your project.
 
-SSPullToRefresh uses [Automatic Reference Counting (ARC)](http://clang.llvm.org/docs/AutomaticReferenceCounting.html). (I think [you should use ARC](http://blog.samsoff.es/automatic-reference-counting) by the way.) If your project doesn't use ARC, you will need to set the `-fobjc-arc` compiler flag on all of the SSPullToRefresh source files. To do this in Xcode, go to your active target and select the "Build Phases" tab. In the "Compiler Flags" column, set `-fobjc-arc` for each of the SSPullToRefresh source files.
+SSPullToRefresh uses [Automatic Reference Counting (ARC)](http://clang.llvm.org/docs/AutomaticReferenceCounting.html). (I think [you should use ARC](http://sam.roon.io/automatic-reference-counting) by the way.) If your project doesn't use ARC, you will need to set the `-fobjc-arc` compiler flag on all of the SSPullToRefresh source files. To do this in Xcode, go to your active target and select the "Build Phases" tab. In the "Compiler Flags" column, set `-fobjc-arc` for each of the SSPullToRefresh source files.
 
 
 ## Thanks
