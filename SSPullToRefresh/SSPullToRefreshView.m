@@ -171,26 +171,38 @@
 
 
 - (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated {
+	[self startLoadingAndExpand:shouldExpand animated:animated completion:nil];
+}
+
+- (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated completion:(void(^)())block {
 	// If we're not loading, this method has no effect
     if (self.state == SSPullToRefreshViewStateLoading) {
 		return;
 	}
-
+	
 	// Animate back to the loading state
-	[self _setState:SSPullToRefreshViewStateLoading animated:animated expanded:shouldExpand completion:nil];
+	[self _setState:SSPullToRefreshViewStateLoading animated:animated expanded:shouldExpand completion:block];
 }
 
 
 - (void)finishLoading {
+	[self finishLoadingAnimated:YES completion:nil];
+}
+
+- (void)finishLoadingAnimated:(BOOL)animated completion:(void(^)())block {
 	// If we're not loading, this method has no effect
     if (self.state != SSPullToRefreshViewStateLoading) {
 		return;
 	}
-
+	
 	// Animate back to the normal state
 	__weak SSPullToRefreshView *blockSelf = self;
-	[self _setState:SSPullToRefreshViewStateClosing animated:YES expanded:NO completion:^{
+	[self _setState:SSPullToRefreshViewStateClosing animated:animated expanded:NO completion:^{
 		blockSelf.state = SSPullToRefreshViewStateNormal;
+		
+		if (block) {
+			block();
+		}
 	}];
 	[self refreshLastUpdatedAt];
 }
