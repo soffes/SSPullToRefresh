@@ -7,7 +7,7 @@
 //
 
 #import "SSPullToRefreshView.h"
-#import "SSPullToRefreshDefaultContentView.h"
+#import "SSPullToRefreshSimpleContentView.h"
 
 @interface SSPullToRefreshView ()
 @property (nonatomic, readwrite) SSPullToRefreshViewState state;
@@ -77,7 +77,7 @@
 - (UIView<SSPullToRefreshContentView> *)contentView {
 	// Use the simple content view as the default
 	if (!_contentView) {
-		self.contentView = [[SSPullToRefreshDefaultContentView alloc] initWithFrame:CGRectZero];
+		self.contentView = [[SSPullToRefreshSimpleContentView alloc] initWithFrame:CGRectZero];
 	}
 	return _contentView;
 }
@@ -140,17 +140,18 @@
 	CGRect frame = CGRectMake(0.0f, 0.0f - scrollView.bounds.size.height, scrollView.bounds.size.width,
 							  scrollView.bounds.size.height);
 	if ((self = [self initWithFrame:frame])) {
-		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		self.scrollView = scrollView;
-		self.delegate = delegate;
-		self.state = SSPullToRefreshViewStateNormal;
-		self.expandedHeight = 70.0f;
-
 		for (UIView *view in self.scrollView.subviews) {
 			if ([view isKindOfClass:[SSPullToRefreshView class]]) {
 				[[NSException exceptionWithName:@"SSPullToRefreshViewAlreadyAdded" reason:@"There is already a SSPullToRefreshView added to this scroll view. Unexpected things will happen. Don't do this." userInfo:nil] raise];
 			}
 		}
+
+		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		self.scrollView = scrollView;
+		self.delegate = delegate;
+		self.state = SSPullToRefreshViewStateNormal;
+		self.expandedHeight = 70.0f;
+		self.defaultContentInset = scrollView.contentInset;
 
 		// Add to scroll view
 		[self.scrollView addSubview:self];
