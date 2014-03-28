@@ -8,6 +8,7 @@
 
 #import "SSPullToRefreshView.h"
 #import "SSPullToRefreshSimpleContentView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SSPullToRefreshView ()
 @property (nonatomic, readwrite) SSPullToRefreshViewState state;
@@ -28,6 +29,7 @@
 @synthesize defaultContentInset = _defaultContentInset;
 @synthesize topInset = _topInset;
 @synthesize animationSemaphore = _animationSemaphore;
+@synthesize style = _style;
 
 
 #pragma mark - Accessors
@@ -99,6 +101,11 @@
 }
 
 
+- (void)setStyle:(SSPullToRefreshViewStyle)style {
+	_style = style;
+	[self setNeedsLayout];
+}
+
 #pragma mark - NSObject
 
 - (void)dealloc {
@@ -130,7 +137,19 @@
 		contentSize.height = self.expandedHeight;
 	}
 
-	self.contentView.frame = CGRectMake(roundf((size.width - contentSize.width) / 2.0f), size.height - contentSize.height, contentSize.width, contentSize.height);
+	CGRect contentFrame;
+	contentFrame.origin.x = roundf((size.width - contentSize.width) / 2.0f);
+	contentFrame.size = contentSize;
+	switch (self.style) {
+		case SSPullToRefreshViewStyleScrolling:
+			contentFrame.origin.y = size.height - contentSize.height;
+			break;
+		case SSPullToRefreshViewStyleStatic:
+			contentFrame.origin.y = size.height + self.defaultContentInset.top + self.scrollView.contentOffset.y;
+			break;
+	}
+
+	self.contentView.frame = contentFrame;
 }
 
 
@@ -159,6 +178,9 @@
 		// Semaphore is used to ensure only one animation plays at a time
 		_animationSemaphore = dispatch_semaphore_create(0);
 		dispatch_semaphore_signal(_animationSemaphore);
+
+        // Set layer position below other scrollView subviews
+        self.layer.zPosition = -100;
 	}
 	return self;
 }
@@ -243,6 +265,12 @@
 
 	// Update the content inset
 	self.scrollView.contentInset = inset;
+
+	// For static style, trigger layout subviews immediately to prevent jumping
+	if (self.style == SSPullToRefreshViewStyleStatic) {
+		[self setNeedsLayout];
+		[self layoutIfNeeded];
+	}
 
 	// If scrollView is on top, scroll again to the top (needed for scrollViews with content > scrollView).
 	if (self.scrollView.contentOffset.y <= 0.0f) {
@@ -331,6 +359,11 @@
 		return;
 	}
 
+	// Need to layout subviews for static style
+	if (self.style == SSPullToRefreshViewStyleStatic) {
+		[self setNeedsLayout];
+	}
+    
 	// Get the offset out of the change notification
 	CGFloat y = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y + self.defaultContentInset.top;
 

@@ -44,6 +44,14 @@ typedef enum {
 	SSPullToRefreshViewStateClosing
 } SSPullToRefreshViewState;
 
+typedef enum {
+	/// Pull to refresh view will scroll together with the rest of `scrollView` subviews
+	SSPullToRefreshViewStyleScrolling,
+	
+	/// Pull to refresh view will sit on top of `scrollView` (iOS 7 `UIRefreshControl` style)
+	SSPullToRefreshViewStyleStatic
+} SSPullToRefreshViewStyle;
+
 @protocol SSPullToRefreshViewDelegate;
 @protocol SSPullToRefreshContentView;
 
@@ -105,6 +113,11 @@ typedef enum {
  @see SSPullToRefreshViewState
  */
 @property (nonatomic, assign, readonly) SSPullToRefreshViewState state;
+
+/**
+ A pull to refresh view style. The default is `SSPullToRefreshViewStyleScrolling`.
+ */
+@property (nonatomic, assign) SSPullToRefreshViewStyle style;
 
 /**
  All you need to do to add this view to your scroll view is call this method (passing in the scroll view). That's it.
