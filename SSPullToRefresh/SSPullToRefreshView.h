@@ -148,7 +148,7 @@ typedef enum {
 @optional
 
 /**
- Return `NO` if the pull to refresh view should no start loading.
+ Return `NO` if the pull to refresh view should not start loading.
  */
 - (BOOL)pullToRefreshViewShouldStartLoading:(SSPullToRefreshView *)view;
 
