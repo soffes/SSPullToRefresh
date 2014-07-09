@@ -9,9 +9,17 @@
 //
 // Example usage:
 //
+// // If automaticallyAdjustsScrollViewInsets is set to NO:
 // - (void)viewDidLoad {
 //    [super viewDidLoad];
 //    self.pullToRefreshView = [[SSPullToRefreshView alloc] initWithScrollView:self.tableView delegate:self];
+// }
+//
+// // If automaticallyAdjustsScrollViewInsets is set to YES:
+// - (void)viewDidLayoutSubviews {
+//    if(self.pullToRefreshView == nil) {
+//        self.pullToRefreshView = [[SSPullToRefreshView alloc] initWithScrollView:self.tableView delegate:self];
+//    }
 // }
 //
 // - (void)viewDidUnload {
