@@ -30,7 +30,7 @@
 // }
 //
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, SSPullToRefreshViewState) {
 	/// Most will say "Pull to refresh" in this state
 	SSPullToRefreshViewStateNormal,
 
@@ -42,7 +42,7 @@ typedef enum {
 
 	/// The view has finished loading and is animating
 	SSPullToRefreshViewStateClosing
-} SSPullToRefreshViewState;
+};
 
 @protocol SSPullToRefreshViewDelegate;
 @protocol SSPullToRefreshContentView;
