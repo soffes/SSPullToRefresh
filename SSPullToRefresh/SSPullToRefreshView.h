@@ -52,13 +52,14 @@ typedef NS_ENUM(NSUInteger, SSPullToRefreshViewState) {
 	SSPullToRefreshViewStateClosing
 };
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, SSPullToRefreshViewStyle) {
 	/// Pull to refresh view will scroll together with the rest of `scrollView` subviews
 	SSPullToRefreshViewStyleScrolling,
 	
 	/// Pull to refresh view will sit on top of `scrollView` (iOS 7 `UIRefreshControl` style)
 	SSPullToRefreshViewStyleStatic
-} SSPullToRefreshViewStyle;
+};
+
 
 @protocol SSPullToRefreshViewDelegate;
 @protocol SSPullToRefreshContentView;
