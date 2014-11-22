@@ -207,9 +207,9 @@ typedef NS_ENUM(NSUInteger, SSPullToRefreshViewState) {
 @optional
 
 /**
- The pull to refresh view will set send values from `0.0` to `1.0` as the user pulls down. `1.0` means it is fully expanded and
- will change to the `SSPullToRefreshViewStateReady` state. You can use this value to draw the progress of the pull
- (i.e. Tweetbot style).
+ The pull to refresh view will set send values from `0.0` to `1.0` (or higher if the user keeps pulling) as the user
+ pulls down. `1.0` means it is fully expanded and will change to the `SSPullToRefreshViewStateReady` state. You can use
+ this value to draw the progress of the pull (i.e. Tweetbot style).
  */
 - (void)setPullProgress:(CGFloat)pullProgress;
 

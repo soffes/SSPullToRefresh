@@ -309,8 +309,8 @@
 		return;
 	}
 
-	// Ensure the value is between 0 and 1.
-	pullProgress = fmaxf(0.0f, fminf(pullProgress, 1.0f));
+	// Ensure the value is between 0 and 1 (or higher if they keep pulling)
+	pullProgress = fmaxf(0.0f, pullProgress);
 
 	// Notify the content view
 	[self.contentView setPullProgress:pullProgress];
