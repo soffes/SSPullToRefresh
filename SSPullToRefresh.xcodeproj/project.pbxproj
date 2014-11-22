@@ -129,7 +129,7 @@
 		9E5FDF0216B9E4D70028CF6C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0510;
 			};
 			buildConfigurationList = 9E5FDF0516B9E4D70028CF6C /* Build configuration list for PBXProject "SSPullToRefresh" */;
 			compatibilityVersion = "Xcode 3.2";
