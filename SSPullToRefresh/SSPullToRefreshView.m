@@ -371,6 +371,9 @@
 	if (self.scrollView.isDragging) {
 		// Scroll view is ready
 		if (self.state == SSPullToRefreshViewStateReady) {
+			// Update the content view's pulling progressing
+			[self _setPullProgress:-y / self.expandedHeight];
+			
 			// Dragged enough to refresh
 			if (y > -self.expandedHeight && y < 0.0f) {
 				self.state = SSPullToRefreshViewStateNormal;
