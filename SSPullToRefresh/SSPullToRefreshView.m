@@ -178,9 +178,6 @@
 		// Semaphore is used to ensure only one animation plays at a time
 		_animationSemaphore = dispatch_semaphore_create(0);
 		dispatch_semaphore_signal(_animationSemaphore);
-
-        // Set layer position below other scrollView subviews
-        self.layer.zPosition = -100;
 	}
 	return self;
 }
