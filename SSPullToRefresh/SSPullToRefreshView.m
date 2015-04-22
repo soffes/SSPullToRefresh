@@ -142,7 +142,7 @@
 	contentFrame.size = contentSize;
 	switch (self.style) {
 		case SSPullToRefreshViewStyleScrolling:
-			contentFrame.origin.y = size.height - contentSize.height;
+			contentFrame.origin.y = size.height - contentSize.height - self.defaultContentInset.top;
 			break;
 		case SSPullToRefreshViewStyleStatic:
 			contentFrame.origin.y = size.height + self.defaultContentInset.top + self.scrollView.contentOffset.y;
