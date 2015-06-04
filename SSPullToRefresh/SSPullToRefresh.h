@@ -6,11 +6,19 @@
 //  Copyright (c) 2012-2014 Sam Soffes. All rights reserved.
 //
 
+@import Foundation;
+
+//! Project version number for SSPullToRefresh.
+FOUNDATION_EXPORT double SSPullToRefreshVersionNumber;
+
+//! Project version string for SSPullToRefresh.
+FOUNDATION_EXPORT const unsigned char SSPullToRefreshVersionString[];
+
 // Main pull to refresh view. This class contains all of the pulling logic.
-#import "SSPullToRefreshView.h"
+#import <SSPullToRefresh/SSPullToRefreshView.h>
 
 // Default content view. Similar to Facebook.
-#import "SSPullToRefreshDefaultContentView.h"
+#import <SSPullToRefresh/SSPullToRefreshDefaultContentView.h>
 
 // Simple content view. Similar to Path.
-#import "SSPullToRefreshSimpleContentView.h"
+#import <SSPullToRefresh/SSPullToRefreshSimpleContentView.h>

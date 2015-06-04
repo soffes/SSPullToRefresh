@@ -38,6 +38,8 @@
 // }
 //
 
+@import UIKit;
+
 typedef NS_ENUM(NSUInteger, SSPullToRefreshViewState) {
 	/// Most will say "Pull to refresh" in this state
 	SSPullToRefreshViewStateNormal,
