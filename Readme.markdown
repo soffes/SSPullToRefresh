@@ -1,5 +1,7 @@
 # SSPullToRefresh
 
+[![Version](https://img.shields.io/github/release/soffes/sspulltorefresh.svg)](https://github.com/soffes/sspulltorefresh/releases) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods compatible](https://img.shields.io/cocoapods/v/sspulltorefresh.svg)](https://cocoapods.org/pods/sspulltorefresh)
+
 There are dozens of pull to refresh views. I've never found one I'm happy with. I always end up customizing one, so I decided to write one that's highly customizable. You can just write your content view and forget about the actual pull to refresh details.
 
 If you're using SSPullToRefresh in your application, add it to [the list](https://github.com/soffes/sspulltorefresh/wiki/Applications).
@@ -77,24 +79,19 @@ You may also optionally implement this method:
 
 ## Adding To Your Project
 
-If you are using [CocoaPods](http://cocoapods.org) than just add next line to your `Podfile`:
+[Carthage](https://github.com/carthage/carthage) is the recommended way to install SSPullToRefresh. Add the following to your Cartfile:
+
+``` ruby
+github "soffes/sspulltorefresh"
+```
+
+You can also install with [CocoaPods](https://cocoapods.org):
 
 ``` ruby
 pod 'SSPullToRefresh'
 ```
 
-Now run `pod install` to install the dependency.
-
-### Manually
-
-[Download](https://github.com/soffes/sspulltorefresh/zipball/master) the source files or add it as a [git submodule](http://schacon.github.com/git/user-manual.html#submodules). Here's how to add it as a submodule:
-
-    $ cd YourProject
-    $ git submodule add https://github.com/soffes/sspulltorefresh.git Vendor/SSPullToRefresh
-
-Add all of the Objective-C files to your project.
-
-SSPullToRefresh uses [Automatic Reference Counting (ARC)](http://clang.llvm.org/docs/AutomaticReferenceCounting.html). (I think [you should use ARC](http://sam.roon.io/automatic-reference-counting) by the way.) If your project doesn't use ARC, you will need to set the `-fobjc-arc` compiler flag on all of the SSPullToRefresh source files. To do this in Xcode, go to your active target and select the "Build Phases" tab. In the "Compiler Flags" column, set `-fobjc-arc` for each of the SSPullToRefresh source files.
+For manual installation, I recommend adding the project as a subproject to your project or workspace and adding the framework as a target dependency.
 
 
 ## Thanks
