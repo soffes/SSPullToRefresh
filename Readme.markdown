@@ -1,6 +1,6 @@
 # SSPullToRefresh
 
-[![Version](https://img.shields.io/github/release/soffes/sspulltorefresh.svg)](https://github.com/soffes/sspulltorefresh/releases) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods compatible](https://img.shields.io/cocoapods/v/sspulltorefresh.svg)](https://cocoapods.org/pods/sspulltorefresh)
+[![Version](https://img.shields.io/github/release/soffes/sspulltorefresh.svg)](https://github.com/soffes/sspulltorefresh/releases) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods compatible](https://img.shields.io/cocoapods/v/SSPullToRefresh.svg)](https://cocoapods.org/pods/SSPullToRefresh)
 
 There are dozens of pull to refresh views. I've never found one I'm happy with. I always end up customizing one, so I decided to write one that's highly customizable. You can just write your content view and forget about the actual pull to refresh details.
 
