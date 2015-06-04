@@ -8,7 +8,7 @@
 
 #import "SSPullToRefreshView.h"
 #import "SSPullToRefreshSimpleContentView.h"
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 
 @interface SSPullToRefreshView ()
 @property (nonatomic, readwrite) SSPullToRefreshViewState state;
@@ -158,7 +158,7 @@
 - (id)initWithScrollView:(UIScrollView *)scrollView delegate:(id<SSPullToRefreshViewDelegate>)delegate {
 	CGRect frame = CGRectMake(0.0f, 0.0f - scrollView.bounds.size.height, scrollView.bounds.size.width,
 							  scrollView.bounds.size.height);
-	if ((self = [self initWithFrame:frame])) {
+	if ((self = [super initWithFrame:frame])) {
 		for (UIView *view in self.scrollView.subviews) {
 			if ([view isKindOfClass:[SSPullToRefreshView class]]) {
 				[[NSException exceptionWithName:@"SSPullToRefreshViewAlreadyAdded" reason:@"There is already a SSPullToRefreshView added to this scroll view. Unexpected things will happen. Don't do this." userInfo:nil] raise];
