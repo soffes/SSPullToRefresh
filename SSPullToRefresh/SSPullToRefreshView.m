@@ -387,7 +387,7 @@
 		// Scroll view is loading
 		} else if (self.state == SSPullToRefreshViewStateLoading) {
             CGFloat insetAdjustment = y < 0 ? fmaxf(0, self.expandedHeight + y) : self.expandedHeight;
-			[self _setContentInsetTop:self.expandedHeight - insetAdjustment];
+			[self _setContentInsetTop:roundf(self.expandedHeight - insetAdjustment)];
 		}
 		return;
 	} else if (self.scrollView.isDecelerating) {
