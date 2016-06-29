@@ -20,6 +20,7 @@
 		2112CB751D24154800B214F7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2112CB741D24154800B214F7 /* ContentView.swift */; };
 		2112CB771D24166A00B214F7 /* RefreshViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2112CB761D24166A00B214F7 /* RefreshViewDelegate.swift */; };
 		2112CB791D2419FB00B214F7 /* DefaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2112CB781D2419FB00B214F7 /* DefaultContentView.swift */; };
+		21BF51231D242D27001801A5 /* SimpleContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BF51221D242D27001801A5 /* SimpleContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		2112CB741D24154800B214F7 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2112CB761D24166A00B214F7 /* RefreshViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshViewDelegate.swift; sourceTree = "<group>"; };
 		2112CB781D2419FB00B214F7 /* DefaultContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultContentView.swift; sourceTree = "<group>"; };
+		21BF51221D242D27001801A5 /* SimpleContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 				2112CB761D24166A00B214F7 /* RefreshViewDelegate.swift */,
 				2112CB741D24154800B214F7 /* ContentView.swift */,
 				2112CB781D2419FB00B214F7 /* DefaultContentView.swift */,
+				21BF51221D242D27001801A5 /* SimpleContentView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 			files = (
 				2112CB751D24154800B214F7 /* ContentView.swift in Sources */,
 				2112CB731D2413E800B214F7 /* RefreshView.swift in Sources */,
+				21BF51231D242D27001801A5 /* SimpleContentView.swift in Sources */,
 				2112CB791D2419FB00B214F7 /* DefaultContentView.swift in Sources */,
 				2112CB771D24166A00B214F7 /* RefreshViewDelegate.swift in Sources */,
 			);
