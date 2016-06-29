@@ -49,15 +49,7 @@ public class RefreshView: UIView {
 		/// The refresh is completed. The view is now animating out.
 		case Closing
 	}
-	
-	public enum Style {
-		/// The view is attachted to the scroll view and pulls with the scroll view content.
-		case Scrolling
-		
-		/// The view is stationary behind the scroll view content (like the system UIRefreshControl).
-		case Stationary
-	}
-	
+
 	
 	// MARK: - Properties
 	
@@ -80,6 +72,7 @@ public class RefreshView: UIView {
 	/// The content view displayed when the `scrollView` is pulled down.
 	public var contentView: ContentView {
 		willSet {
+			contentViewMinimumHeightConstraint = nil
 			contentView.view.removeFromSuperview()
 		}
 
@@ -105,13 +98,6 @@ public class RefreshView: UIView {
 		}
 	}
 
-	/// A refresh view style. The default is `.Scrolling`.
-	public private(set) var style: Style = .Scrolling {
-		didSet {
-			// TODO: Update constraints
-		}
-	}
-	
 	/// If you need to update the scroll view's content inset while it contains a refresh view, you should set the
 	/// `defaultContentInset` on the refresh view and it will forward it to the scroll view taking into account the
 	/// refresh view's position.
@@ -126,7 +112,11 @@ public class RefreshView: UIView {
 	/// The `contentView`'s `sizeThatFits:` will be respected when displayed but does not effect the expanded height.
 	/// You can use this to draw outside of the expanded area. If you don't implement `sizeThatFits:` it will
 	/// automatically display at the default size.
-	public var expandedHeight: CGFloat = 64
+	public var expandedHeight: CGFloat = 64 {
+		didSet {
+			contentViewMinimumHeightConstraint?.constant = expandedHeight
+		}
+	}
 	
 	/// A boolean indicating if the pull to refresh view is expanded.
 	public private(set) var isExpanded = false {
@@ -141,14 +131,15 @@ public class RefreshView: UIView {
 		}
 	}
 
-	private var topInset: CGFloat = 0
-
 	// Semaphore is used to ensure only one animation plays at a time
 	private var animationSemaphore: dispatch_semaphore_t = {
 		let semaphore = dispatch_semaphore_create(0)
 		dispatch_semaphore_signal(semaphore)
 		return semaphore
 	}()
+
+	private var topInset: CGFloat = 0
+	private var contentViewMinimumHeightConstraint: NSLayoutConstraint?
 
 
 	// MARK: - Initializers
@@ -252,13 +243,14 @@ public class RefreshView: UIView {
 
 		contentView.view.translatesAutoresizingMaskIntoConstraints = false
 
-		// TODO: Updated height contraint with expandedHeight changes
-		// TODO: Support stationary style
+		let minumumHeightConstraint = contentView.view.heightAnchor.constraintGreaterThanOrEqualToConstant(expandedHeight)
+		contentViewMinimumHeightConstraint = minumumHeightConstraint
+
 		NSLayoutConstraint.activateConstraints([
 			contentView.view.bottomAnchor.constraintEqualToAnchor(bottomAnchor),
 			contentView.view.leadingAnchor.constraintEqualToAnchor(leadingAnchor),
 			contentView.view.trailingAnchor.constraintEqualToAnchor(trailingAnchor),
-			contentView.view.heightAnchor.constraintGreaterThanOrEqualToConstant(expandedHeight)
+			minumumHeightConstraint
 		])
 	}
 
