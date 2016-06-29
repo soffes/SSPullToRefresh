@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name      = 'SSPullToRefresh'
-  s.version   = '1.2.4'
+  s.name      = 'PullToRefresh'
+  s.version   = '2.0.0'
   s.summary   = 'Simple and highly customizable pull to refresh view.'
   s.homepage  = 'https://github.com/soffes/sspulltorefresh'
   s.author    = { 'Sam Soffes' => 'sam@soff.es' }
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
     :type => 'MIT',
     :file => 'LICENSE'
   }
-  s.source_files = 'SSPullToRefresh/**/*.{h,m}'
-  s.description = 'SSPullToRefresh is a simple and highly customizable pull to refresh view. It lets you implement a content view separate so you don\'t have to hack up the pulling logic everything you want to customize the appearance.'
-  s.platform = :ios, '5.0'
+  s.source_files = 'Sources/*.swift'
+  s.description = 'PullToRefresh is a simple and highly customizable pull to refresh view. It lets you implement a content view separate so you don\'t have to hack up the pulling logic everything you want to customize the appearance.'
+  s.platform = :ios, '7.0'
 end
