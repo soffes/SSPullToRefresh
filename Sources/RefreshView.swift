@@ -108,7 +108,7 @@ public class RefreshView: UIView {
 	/// A refresh view style. The default is `.Scrolling`.
 	public private(set) var style: Style = .Scrolling {
 		didSet {
-			setNeedsLayout()
+			// TODO: Update constraints
 		}
 	}
 	
@@ -165,6 +165,8 @@ public class RefreshView: UIView {
 
 		super.init(frame: .zero)
 
+		translatesAutoresizingMaskIntoConstraints = false
+
 		scrollViewDidChange()
 		contentViewDidChange()
 	}
@@ -183,36 +185,6 @@ public class RefreshView: UIView {
 	public override func removeFromSuperview() {
 		scrollView = nil
 		super.removeFromSuperview()
-	}
-
-	public override func layoutSubviews() {
-		guard let scrollView = scrollView else { return }
-
-		frame = CGRect(x: 0, y: -scrollView.bounds.height, width: scrollView.bounds.width, height: scrollView.bounds.height)
-
-		let size = bounds.size
-		var contentSize = contentView.view.sizeThatFits(size)
-
-		if contentSize.width < size.width {
-			contentSize.width = size.width
-		}
-
-		if contentSize.height < expandedHeight {
-			contentSize.height = expandedHeight
-		}
-
-		var contentFrame = CGRect.zero
-		contentFrame.origin.x = round((size.width - contentSize.width) / 2)
-		contentFrame.size = contentSize
-
-		switch (style) {
-		case .Scrolling:
-			contentFrame.origin.y = size.height - contentSize.height
-		case .Stationary:
-			contentFrame.origin.y = size.height + defaultContentInsets.top + scrollView.contentOffset.y
-		}
-
-		contentView.view.frame = contentFrame
 	}
 
 
@@ -260,8 +232,16 @@ public class RefreshView: UIView {
 	private func scrollViewDidChange() {
 		guard let scrollView = scrollView else { return }
 		defaultContentInsets = scrollView.contentInset
-		scrollView.addObserver(self, forKeyPath: "contentOffset", options: .New, context: nil)
 		scrollView.addSubview(self)
+
+		NSLayoutConstraint.activateConstraints([
+			leadingAnchor.constraintEqualToAnchor(scrollView.leadingAnchor),
+			widthAnchor.constraintEqualToAnchor(scrollView.widthAnchor),
+			bottomAnchor.constraintEqualToAnchor(scrollView.topAnchor),
+			heightAnchor.constraintEqualToConstant(400)
+		])
+
+		scrollView.addObserver(self, forKeyPath: "contentOffset", options: .New, context: nil)
 	}
 
 	private func contentViewDidChange() {
@@ -269,6 +249,17 @@ public class RefreshView: UIView {
 		contentView.progress = progress
 		invalidateLastUpdatedAt()
 		addSubview(contentView.view)
+
+		contentView.view.translatesAutoresizingMaskIntoConstraints = false
+
+		// TODO: Updated height contraint with expandedHeight changes
+		// TODO: Support stationary style
+		NSLayoutConstraint.activateConstraints([
+			contentView.view.bottomAnchor.constraintEqualToAnchor(bottomAnchor),
+			contentView.view.leadingAnchor.constraintEqualToAnchor(leadingAnchor),
+			contentView.view.trailingAnchor.constraintEqualToAnchor(trailingAnchor),
+			contentView.view.heightAnchor.constraintGreaterThanOrEqualToConstant(expandedHeight)
+		])
 	}
 
 	private func updateTopContentInset(topInset: CGFloat) {
@@ -288,12 +279,6 @@ public class RefreshView: UIView {
 
 		// Update the content inset
 		scrollView.contentInset = insets
-
-		// For stationary style, trigger layout subviews immediately to prevent jumping
-		if style == .Stationary {
-			setNeedsLayout()
-			layoutIfNeeded()
-		}
 
 		// If scroll view is on top, scroll again to the top (needed for scroll views with content > scroll view).
 		if scrollView.contentOffset.y <= 0 {
@@ -349,11 +334,6 @@ public class RefreshView: UIView {
 		if keyPath != "contentOffset" {
 			super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
 			return
-		}
-
-		// Needs layout if stationary style
-		if style == .Stationary {
-			setNeedsLayout()
 		}
 
 		// Get the offset out of the change notification
