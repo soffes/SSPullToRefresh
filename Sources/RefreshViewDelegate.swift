@@ -9,16 +9,16 @@
 import UIKit
 
 public protocol RefreshViewDelegate: class {
-	/// Return `false` if the refresh view should not start loading.
-	func refreshViewshouldStartLoading(refreshView: RefreshView) -> Bool
+	/// Return `false` if the refresh view should not start refreshing.
+	func refreshViewShouldStartRefreshing(refreshView: RefreshView) -> Bool
 	
-	/// The refresh view started loading. You should kick off whatever you need to load when this is called.
-	func refreshViewDidStartLoading(refreshView: RefreshView)
+	/// The refresh view started refreshing. You should kick off whatever you need to load when this is called.
+	func refreshViewDidStartRefreshing(refreshView: RefreshView)
 	
-	/// The refresh view finished loading. This will get called when it receives `finishLoading`.
-	func refreshViewDidFinishLoading(refreshView: RefreshView)
+	/// The refresh view finished refreshing. This will get called when it receives `finishRefreshing`.
+	func refreshViewDidFinishRefreshing(refreshView: RefreshView)
 	
-	/// The date when data was last updated. This will get called when it finishes loading or if it receives
+	/// The date when data was last updated. This will get called when it finishes refreshing or if it receives
 	/// `invalidateLastUpdatedAt`. Some content views may display this date.
 	func lastUpdatedAtForRefreshView(refreshView: RefreshView) -> NSDate?
 	

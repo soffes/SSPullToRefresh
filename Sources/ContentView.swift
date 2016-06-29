@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol ContentView {
+public protocol ContentView: class {
 	var state: RefreshView.State { get set }
 	var progress: CGFloat { get set }
 	var lastUpdatedAt: NSDate? { get set }
