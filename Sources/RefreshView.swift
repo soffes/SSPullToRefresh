@@ -10,14 +10,13 @@ import UIKit
 
 /// Example usage:
 ///
-/// var refreshView: RefreshView?
+/// let refreshView = RefreshView()
 ///
-/// override func viewDidLayoutSubviews() {
-///     super.viewDidLayoutSubviews()
+/// override func viewDidLoad() {
+///     super.viewDidLoad()
 ///
-///     if refreshView == nil {
-///         refreshView = RefreshView(scrollView: tableView, delegate: self)
-///     }
+///     refreshView.scrollView = tableView
+///     refreshView.delegate = self
 /// }
 ///
 /// func refresh() {
@@ -149,7 +148,7 @@ public class RefreshView: UIView {
 	///
 	/// You don't have to add it as subview or anything else. You should only initalize with this method and never move
 	/// it to another scroll view during its lifetime.
-	public init(scrollView: UIScrollView, delegate: RefreshViewDelegate, contentView: ContentView = DefaultContentView()) {
+	public init(scrollView: UIScrollView? = nil, delegate: RefreshViewDelegate? = nil, contentView: ContentView = DefaultContentView()) {
 		self.scrollView = scrollView
 		self.delegate = delegate
 		self.contentView = contentView
