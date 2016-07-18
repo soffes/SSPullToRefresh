@@ -64,12 +64,12 @@ public class SimpleContentView: UIView, ContentView {
 	private func updateState() {
 		switch state {
 		case .Closed, .Opening:
-			statusLabel.text = NSLocalizedString("Pull down to refresh…", comment: "")
+			statusLabel.text = NSLocalizedString("Pull down to refresh", comment: "")
 			statusLabel.alpha = 1
 			activityIndicatorView.stopAnimating()
 			activityIndicatorView.alpha = 0
 		case.Ready:
-			statusLabel.text = NSLocalizedString("Release to refresh…", comment: "")
+			statusLabel.text = NSLocalizedString("Release to refresh", comment: "")
 			statusLabel.alpha = 1
 			activityIndicatorView.stopAnimating()
 			activityIndicatorView.alpha = 0
