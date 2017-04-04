@@ -130,6 +130,11 @@ typedef NS_ENUM(NSUInteger, SSPullToRefreshViewStyle) {
  */
 @property (nonatomic, assign) SSPullToRefreshViewStyle style;
 
+
+- (instancetype)initWithFrame:(CGRect)aRect NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
+
 /**
  All you need to do to add this view to your scroll view is call this method (passing in the scroll view). That's it.
  You don't have to add it as subview or anything else. The rest is magic.
