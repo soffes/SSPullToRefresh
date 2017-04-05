@@ -321,6 +321,7 @@
 				368DECD81B20B1300098369F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9E5FDF0516B9E4D70028CF6C /* Build configuration list for PBXProject "SSPullToRefresh" */ = {
 			isa = XCConfigurationList;
