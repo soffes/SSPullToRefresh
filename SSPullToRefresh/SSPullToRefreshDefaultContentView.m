@@ -20,24 +20,24 @@
 	if ((self = [super initWithFrame:frame])) {
 		CGFloat width = self.bounds.size.width;
 
-		_statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 14.0f, width, 20.0f)];
+		_statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 14.0, width, 20.0)];
 		_statusLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_statusLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+		_statusLabel.font = [UIFont boldSystemFontOfSize:14.0];
 		_statusLabel.textColor = [UIColor blackColor];
 		_statusLabel.backgroundColor = [UIColor clearColor];
 		_statusLabel.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:_statusLabel];
 
-		_lastUpdatedAtLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 34.0f, width, 20.0f)];
+		_lastUpdatedAtLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 34.0, width, 20.0)];
 		_lastUpdatedAtLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_lastUpdatedAtLabel.font = [UIFont systemFontOfSize:12.0f];
+		_lastUpdatedAtLabel.font = [UIFont systemFontOfSize:12.0];
 		_lastUpdatedAtLabel.textColor = [UIColor lightGrayColor];
 		_lastUpdatedAtLabel.backgroundColor = [UIColor clearColor];
 		_lastUpdatedAtLabel.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:_lastUpdatedAtLabel];
 
         _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		_activityIndicatorView.frame = CGRectMake(30.0f, 25.0f, 20.0f, 20.0f);
+		_activityIndicatorView.frame = CGRectMake(30.0, 25.0, 20.0, 20.0);
 		[self addSubview:_activityIndicatorView];
 	}
 	return self;

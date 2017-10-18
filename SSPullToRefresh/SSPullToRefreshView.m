@@ -48,7 +48,7 @@
 			[delegate pullToRefreshViewDidFinishLoading:self];
 		}
 	} else if (!wasLoading && _state == SSPullToRefreshViewStateLoading) {
-		[self _setPullProgress:1.0f];
+		[self _setPullProgress:1.0];
 		if ([delegate respondsToSelector:@selector(pullToRefreshViewDidStartLoading:)]) {
 			[delegate pullToRefreshViewDidStartLoading:self];
 		}
@@ -58,7 +58,7 @@
 
 - (void)setExpanded:(BOOL)expanded {
 	_expanded = expanded;
-	[self _setContentInsetTop:expanded ? self.expandedHeight : 0.0f];
+	[self _setContentInsetTop:expanded ? self.expandedHeight : 0.0];
 }
 
 
@@ -138,7 +138,7 @@
 	}
 
 	CGRect contentFrame;
-	contentFrame.origin.x = roundf((size.width - contentSize.width) / 2.0f);
+	contentFrame.origin.x = round((size.width - contentSize.width) / 2.0);
 	contentFrame.size = contentSize;
 	switch (self.style) {
 		case SSPullToRefreshViewStyleScrolling:
@@ -156,7 +156,7 @@
 #pragma mark - Initializer
 
 - (id)initWithScrollView:(UIScrollView *)scrollView delegate:(id<SSPullToRefreshViewDelegate>)delegate {
-	CGRect frame = CGRectMake(0.0f, 0.0f - scrollView.bounds.size.height, scrollView.bounds.size.width,
+	CGRect frame = CGRectMake(0.0, 0.0 - scrollView.bounds.size.height, scrollView.bounds.size.width,
 							  scrollView.bounds.size.height);
 	if ((self = [super initWithFrame:frame])) {
 		for (UIView *view in self.scrollView.subviews) {
@@ -169,7 +169,7 @@
 		self.scrollView = scrollView;
 		self.delegate = delegate;
 		self.state = SSPullToRefreshViewStateNormal;
-		self.expandedHeight = 70.0f;
+		self.expandedHeight = 70.0;
 		self.defaultContentInset = scrollView.contentInset;
 
 		// Add to scroll view
@@ -270,8 +270,8 @@
 	}
 
 	// If scrollView is on top, scroll again to the top (needed for scrollViews with content > scrollView).
-	if (self.scrollView.contentOffset.y <= 0.0f) {
-		[self.scrollView scrollRectToVisible:CGRectMake(0.0f, 0.0f, 1.0f, 1.0f) animated:NO];
+	if (self.scrollView.contentOffset.y <= 0.0) {
+		[self.scrollView scrollRectToVisible:CGRectMake(0.0, 0.0, 1.0, 1.0) animated:NO];
 	}
 
 	// Tell the delegate
@@ -335,7 +335,7 @@
 	}
 
 	// Ensure the value is between 0 and 1 (or higher if they keep pulling)
-	pullProgress = fmaxf(0.0f, pullProgress);
+	pullProgress = fmax(0.0, pullProgress);
 
 	// Notify the content view
 	[self.contentView setPullProgress:pullProgress];
@@ -372,7 +372,7 @@
 			[self _setPullProgress:-y / self.expandedHeight];
 			
 			// Dragged enough to refresh
-			if (y > -self.expandedHeight && y < 0.0f) {
+			if (y > -self.expandedHeight && y < 0.0) {
 				self.state = SSPullToRefreshViewStateNormal;
 			}
 		// Scroll view is normal
@@ -386,7 +386,7 @@
 			}
 		// Scroll view is loading
 		} else if (self.state == SSPullToRefreshViewStateLoading) {
-            CGFloat insetAdjustment = y < 0 ? fmaxf(0, self.expandedHeight + y) : self.expandedHeight;
+            CGFloat insetAdjustment = y < 0 ? fmax(0, self.expandedHeight + y) : self.expandedHeight;
 			[self _setContentInsetTop:self.expandedHeight - insetAdjustment];
 		}
 		return;
