@@ -194,7 +194,7 @@
 	[self startLoadingAndExpand:shouldExpand animated:animated completion:nil];
 }
 
-- (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated completion:(void(^)())block {
+- (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated completion:(void(^)(void))block {
 	// If we're not loading, this method has no effect
     if (self.state == SSPullToRefreshViewStateLoading) {
 		return;
@@ -209,7 +209,7 @@
 	[self finishLoadingAnimated:YES completion:nil];
 }
 
-- (void)finishLoadingAnimated:(BOOL)animated completion:(void(^)())block {
+- (void)finishLoadingAnimated:(BOOL)animated completion:(void(^)(void))block {
 	// If we're not loading, this method has no effect
     if (self.state != SSPullToRefreshViewStateLoading) {
 		return;
