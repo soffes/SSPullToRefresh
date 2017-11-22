@@ -156,13 +156,13 @@ typedef NS_ENUM(NSUInteger, SSPullToRefreshViewStyle) {
  animate down the pull to refresh view to show that it's loading.
  */
 - (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated;
-- (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated completion:(void(^)())block;
+- (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated completion:(void(^)(void))block;
 
 /**
  Call this when you finish loading.
  */
 - (void)finishLoading;
-- (void)finishLoadingAnimated:(BOOL)animated completion:(void(^)())block;
+- (void)finishLoadingAnimated:(BOOL)animated completion:(void(^)(void))block;
 
 /**
  Manually update the last updated at time. This will automatically get called when the pull to refresh view finishes laoding.

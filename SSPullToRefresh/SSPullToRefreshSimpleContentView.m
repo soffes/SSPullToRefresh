@@ -20,16 +20,16 @@
 	if ((self = [super initWithFrame:frame])) {
 		CGFloat width = self.bounds.size.width;
 
-		_statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 14.0f, width, 20.0f)];
+		_statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 14.0, width, 20.0)];
 		_statusLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_statusLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+		_statusLabel.font = [UIFont boldSystemFontOfSize:14.0];
 		_statusLabel.textColor = [UIColor blackColor];
 		_statusLabel.backgroundColor = [UIColor clearColor];
 		_statusLabel.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:_statusLabel];
 
 		_activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		_activityIndicatorView.frame = CGRectMake(30.0f, 25.0f, 20.0f, 20.0f);
+		_activityIndicatorView.frame = CGRectMake(30.0, 25.0, 20.0, 20.0);
 		[self addSubview:_activityIndicatorView];
 	}
 	return self;
@@ -38,8 +38,8 @@
 
 - (void)layoutSubviews {
 	CGSize size = self.bounds.size;
-	self.statusLabel.frame = CGRectMake(20.0f, roundf((size.height - 30.0f) / 2.0f), size.width - 40.0f, 30.0f);
-	self.activityIndicatorView.frame = CGRectMake(roundf((size.width - 20.0f) / 2.0f), roundf((size.height - 20.0f) / 2.0f), 20.0f, 20.0f);
+	self.statusLabel.frame = CGRectMake(20.0, round((size.height - 30.0) / 2.0), size.width - 40.0, 30.0);
+	self.activityIndicatorView.frame = CGRectMake(round((size.width - 20.0) / 2.0), round((size.height - 20.0) / 2.0), 20.0, 20.0);
 }
 
 
@@ -50,28 +50,28 @@
 		case SSPullToRefreshViewStateReady: {
 			self.statusLabel.text = NSLocalizedString(@"Release to refresh", nil);
 			[self.activityIndicatorView startAnimating];
-			self.activityIndicatorView.alpha = 0.0f;
+			self.activityIndicatorView.alpha = 0.0;
 			break;
 		}
 
 		case SSPullToRefreshViewStateNormal: {
 			self.statusLabel.text = NSLocalizedString(@"Pull down to refresh", nil);
-			self.statusLabel.alpha = 1.0f;
+			self.statusLabel.alpha = 1.0;
 			[self.activityIndicatorView stopAnimating];
-			self.activityIndicatorView.alpha = 0.0f;
+			self.activityIndicatorView.alpha = 0.0;
 			break;
 		}
 
 		case SSPullToRefreshViewStateLoading: {
-			self.statusLabel.alpha = 0.0f;
+			self.statusLabel.alpha = 0.0;
 			[self.activityIndicatorView startAnimating];
-			self.activityIndicatorView.alpha = 1.0f;
+			self.activityIndicatorView.alpha = 1.0;
 			break;
 		}
 
 		case SSPullToRefreshViewStateClosing: {
 			self.statusLabel.text = nil;
-			self.activityIndicatorView.alpha = 0.0f;
+			self.activityIndicatorView.alpha = 0.0;
 			break;
 		}
 	}
