@@ -30,6 +30,7 @@
 @synthesize topInset = _topInset;
 @synthesize animationSemaphore = _animationSemaphore;
 @synthesize style = _style;
+@synthesize defaultSafeArea = _defaultSafeArea;
 
 
 #pragma mark - Accessors
@@ -362,7 +363,7 @@
 	}
     
 	// Get the offset out of the change notification
-	CGFloat y = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y + self.defaultContentInset.top;
+   CGFloat y = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue].y + self.defaultContentInset.top + self.defaultSafeArea.top;
 
 	// Scroll view is dragging
 	if (self.scrollView.isDragging) {
