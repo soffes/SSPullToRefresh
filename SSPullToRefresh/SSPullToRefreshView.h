@@ -83,6 +83,12 @@ typedef NS_ENUM(NSUInteger, SSPullToRefreshViewStyle) {
 @property (nonatomic, assign) UIEdgeInsets defaultContentInset;
 
 /**
+ Safe area of scroll view.
+ Since iOS11 views have safeAreaInsets `scrollView` `contentOffset` is dependent upon the safe areas. This property is used when calculating current pull state.
+ */
+@property (nonatomic) UIEdgeInsets defaultSafeArea;
+
+/**
  The height of the fully expanded content view. The default is `70.0`.
 
  The `contentView`'s `sizeThatFits:` will be respected when displayed but does not effect the expanded height. You can use this
