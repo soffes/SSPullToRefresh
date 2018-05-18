@@ -66,6 +66,8 @@ typedef NS_ENUM(NSUInteger, SSPullToRefreshViewStyle) {
 @protocol SSPullToRefreshViewDelegate;
 @protocol SSPullToRefreshContentView;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SSPullToRefreshView : UIView
 
 /**
@@ -105,7 +107,7 @@ typedef NS_ENUM(NSUInteger, SSPullToRefreshViewStyle) {
 
  @see initWithScrollView:delegate:
  */
-@property (nonatomic, assign, readonly) UIScrollView *scrollView;
+@property (nonatomic, unsafe_unretained, readonly, nullable) UIScrollView *scrollView;
 
 /**
  The delegate is sent messages when the pull to refresh view starts loading. This is automatically set with `initWithScrollView:delegate:`.
@@ -113,7 +115,7 @@ typedef NS_ENUM(NSUInteger, SSPullToRefreshViewStyle) {
  @see initWithScrollView:delegate:
  @see SSPullToRefreshViewDelegate
  */
-@property (nonatomic, weak) id<SSPullToRefreshViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SSPullToRefreshViewDelegate> delegate;
 
 /**
  The state of the pull to refresh view.
@@ -156,13 +158,13 @@ typedef NS_ENUM(NSUInteger, SSPullToRefreshViewStyle) {
  animate down the pull to refresh view to show that it's loading.
  */
 - (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated;
-- (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated completion:(void(^)(void))block;
+- (void)startLoadingAndExpand:(BOOL)shouldExpand animated:(BOOL)animated completion:(nullable void(^)(void))block;
 
 /**
  Call this when you finish loading.
  */
 - (void)finishLoading;
-- (void)finishLoadingAnimated:(BOOL)animated completion:(void(^)(void))block;
+- (void)finishLoadingAnimated:(BOOL)animated completion:(nullable void(^)(void))block;
 
 /**
  Manually update the last updated at time. This will automatically get called when the pull to refresh view finishes laoding.
@@ -240,3 +242,5 @@ typedef NS_ENUM(NSUInteger, SSPullToRefreshViewStyle) {
 - (void)setLastUpdatedAt:(NSDate *)date withPullToRefreshView:(SSPullToRefreshView *)view;
 
 @end
+
+NS_ASSUME_NONNULL_END
