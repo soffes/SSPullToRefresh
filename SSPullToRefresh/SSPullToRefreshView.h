@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @see initWithScrollView:delegate:
  */
-@property (nonatomic, weak, readonly, nullable) UIScrollView *scrollView;
+@property (nonatomic, unsafe_unretained, readonly, nullable) UIScrollView *scrollView;
 
 /**
  The delegate is sent messages when the pull to refresh view starts loading. This is automatically set with `initWithScrollView:delegate:`.
